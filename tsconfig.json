@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "outDir": "dist",
+    "module": "CommonJS",
+    "target": "es2019",
+    "esModuleInterop": true,
+    "noEmit": false,
+    "moduleResolution": "Node"
+  },
+  "include": ["src"],
+  "exclude": ["**/*.spec.ts", "**/*.test.ts"]
+}
