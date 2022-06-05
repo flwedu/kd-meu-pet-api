@@ -14,6 +14,17 @@ describe("# Find By Id Controller #", () => {
 
     beforeEach(() => {
       repository = new UsersRepositoryInMemory();
+      repository.save({
+        id: "1",
+        props: {
+          fullName: "John Test",
+          email: "test@example.com",
+          password: "",
+          role: User.Role.ADMIN,
+          profilePic: "",
+          username: "test",
+        },
+      });
       jest.clearAllMocks();
     });
 
@@ -28,7 +39,7 @@ describe("# Find By Id Controller #", () => {
 
       expect.assertions(2);
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.send).toHaveBeenCalledTimes(1);
+      expect(res.json).toHaveBeenCalledTimes(1);
     });
 
     test("For a inexistent user id, should call res.status() with 404 status code", async () => {
