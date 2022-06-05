@@ -10,7 +10,7 @@ function makeFindByIdController<T>(repository: IRepository<T>) {
       const result = await findByIdUseCase(id);
       return res.status(200).json(result);
     } catch (error) {
-      return res.status(404);
+      return res.status(404).send(error.message);
     }
   };
 }
