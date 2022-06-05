@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import app from "./config/express-app";
+import app from "./config/config-express-app";
 
 const PORT = process.env.PORT || 3000;
 
