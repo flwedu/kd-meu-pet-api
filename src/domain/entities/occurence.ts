@@ -1,21 +1,16 @@
 import crypto from "crypto";
 
-namespace Animal {
+namespace Occurence {
   export enum Type {
-    CAT,
-    DOG,
-    BIRD,
-    HORSE,
-    OTHER,
+    DISAPPEARANCE,
+    SIGHTING,
+    FOR_ADOPTION,
   }
 
   export type Props = {
-    name: string;
-    colors: string;
-    description: string;
-    photo: string;
-    lastSeenLocation: string;
     type: Type;
+    geoLocation: string;
+    animalId?: string;
   };
 
   export class Entity {
@@ -29,4 +24,4 @@ namespace Animal {
   }
 }
 
-export default Animal;
+export default Occurence;

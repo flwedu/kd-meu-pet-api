@@ -1,25 +1,29 @@
-enum Role {
-  ADMIN,
-  USER,
-}
+import crypto from "crypto";
 
-type Props = {
-  role: Role
-  fullName: string
-  username: string
-  email: string
-  password: string
-  profilePic: string
-}
+namespace User {
+  export enum Role {
+    ADMIN,
+    USER,
+  }
 
-class User {
-  id: string
-  props: Props
+  export type Props = {
+    role: Role;
+    fullName: string;
+    username: string;
+    email: string;
+    password: string;
+    profilePic: string;
+  };
 
-  constructor(props: Props, id?: string) {
-    this.props = props
-    this.id = id || crypto.randomUUID()
+  export class Entity {
+    id: string;
+    props: Props;
+
+    constructor(props: Props, id?: string) {
+      this.props = props;
+      this.id = id || crypto.randomUUID();
+    }
   }
 }
 
-export default User
+export default User;
