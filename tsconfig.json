@@ -7,7 +7,8 @@
     "target": "es2019",
     "esModuleInterop": true,
     "noEmit": false,
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "experimentalDecorators": true
   },
   "include": ["src"],
   "exclude": ["**/*.spec.ts", "**/*.test.ts"]
