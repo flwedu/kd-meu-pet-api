@@ -2,9 +2,13 @@ import Express from "express";
 import configureMiddlewares from "./config-middlewares";
 import configureRoutes from "./config-routes";
 
-const expressApp = Express();
+function configureExpress(repositories: any) {
+  const expressApp = Express();
 
-configureMiddlewares(expressApp);
-configureRoutes(expressApp);
+  configureMiddlewares(expressApp);
+  configureRoutes(expressApp, repositories);
 
-export default expressApp;
+  return expressApp;
+}
+
+export { configureExpress };

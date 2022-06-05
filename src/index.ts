@@ -1,7 +1,8 @@
 import chalk from "chalk";
-import app from "./config/config-express-app";
+import { configureExpress } from "./config/config-express-app";
 
 const PORT = process.env.PORT || 3000;
+const app = configureExpress(null);
 
 function logProcessStart() {
   const host = "http://localhost";
