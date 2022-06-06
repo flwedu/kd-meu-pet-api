@@ -14,7 +14,7 @@ export function makeCreateController<T>(repository: IRepository<T>) {
     );
 
     try {
-      const id = createUseCase(props);
+      const id = await createUseCase(props);
       return res.status(201).json({ created: id });
     } catch (error) {
       return res.status(400).json({ message: error.message });
