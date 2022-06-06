@@ -1,4 +1,5 @@
 import User from "../../domain/entities/user";
+import { createFakeUser } from "../../utils/fake-entity-factory";
 import IRepository from "../../output/repositories/repository-interface";
 import UsersRepositoryInMemory from "../../output/repositories/in-memory/users-repository-in-memory";
 import { makeFindByIdController } from "./find-by-id-controller";
@@ -14,17 +15,7 @@ describe("# Find By Id Controller #", () => {
 
     beforeEach(() => {
       repository = new UsersRepositoryInMemory();
-      repository.save({
-        id: "1",
-        props: {
-          fullName: "John Test",
-          email: "test@example.com",
-          password: "",
-          role: User.Role.ADMIN,
-          profilePic: "",
-          username: "test",
-        },
-      });
+      repository.save(createFakeUser({}, "1").entity);
       jest.clearAllMocks();
     });
 
