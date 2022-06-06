@@ -21,10 +21,7 @@ describe("# Create Use Case function to User Entity #", () => {
 
   test("given valid props, should save a entity and return the Id", async () => {
     const spy = jest.spyOn(repository, "save");
-    const sut = makeCreateUseCaseFn<User.Entity>(
-      repository,
-      (props) => new User.Entity(props)
-    );
+    const sut = makeCreateUseCaseFn<User.Entity>(repository, "users");
 
     const createdId = await sut(props);
 
@@ -48,10 +45,7 @@ describe("# Create Use Case function to Animal Entity #", () => {
 
   test("given valid props, should save a entity and return the Id", async () => {
     const spy = jest.spyOn(repository, "save");
-    const sut = makeCreateUseCaseFn<Animal.Entity>(
-      repository,
-      (props) => new Animal.Entity(props)
-    );
+    const sut = makeCreateUseCaseFn<Animal.Entity>(repository, "animals");
 
     const createdId = await sut(props);
 
