@@ -1,27 +1,28 @@
 import User from "../entities/user";
 import IRepository from "../../output/repositories/repository-interface";
-import UsersRepositoryInMemory from "../../output/repositories/in-memory/users-repository-in-memory";
+import {
+  AnimalsRepositoryInMemory,
+  UsersRepositoryInMemory,
+} from "../../output/repositories/in-memory";
 import makeCreateUseCaseFn from "./create-use-case";
+import {
+  createFakeUser,
+  createFakeAnimal,
+} from "../../utils/fake-entity-factory";
+import Animal from "../entities/animal";
 
 describe("# Create Use Case function to User Entity #", () => {
-  let userRepository: IRepository<User.Entity>;
-  const props = {
-    username: "testUsername",
-    password: "test",
-    email: "test@example.com",
-    fullName: "John Smith",
-    profilePic: "",
-    role: User.Role.USER,
-  } as User.Props;
+  let repository: IRepository<User.Entity>;
+  const props = createFakeUser({}).props;
 
   beforeEach(() => {
-    userRepository = new UsersRepositoryInMemory();
+    repository = new UsersRepositoryInMemory();
   });
 
   test("given valid props, should save a entity and return the Id", async () => {
-    const spy = jest.spyOn(userRepository, "save");
+    const spy = jest.spyOn(repository, "save");
     const sut = makeCreateUseCaseFn<User.Entity>(
-      userRepository,
+      repository,
       (props) => new User.Entity(props)
     );
 
@@ -30,7 +31,34 @@ describe("# Create Use Case function to User Entity #", () => {
     expect.assertions(3);
     expect(createdId).toEqual(expect.any(String));
     expect(spy).toHaveBeenCalledTimes(1);
-    expect(await userRepository.findById(createdId)).toMatchObject({
+    expect(await repository.findById(createdId)).toMatchObject({
+      id: createdId,
+      props,
+    });
+  });
+});
+
+describe("# Create Use Case function to Animal Entity #", () => {
+  let repository: IRepository<Animal.Entity>;
+  const props = createFakeAnimal({}).props;
+
+  beforeEach(() => {
+    repository = new AnimalsRepositoryInMemory();
+  });
+
+  test("given valid props, should save a entity and return the Id", async () => {
+    const spy = jest.spyOn(repository, "save");
+    const sut = makeCreateUseCaseFn<Animal.Entity>(
+      repository,
+      (props) => new Animal.Entity(props)
+    );
+
+    const createdId = await sut(props);
+
+    expect.assertions(3);
+    expect(createdId).toEqual(expect.any(String));
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(await repository.findById(createdId)).toMatchObject({
       id: createdId,
       props,
     });
