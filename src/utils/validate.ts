@@ -17,7 +17,7 @@ export function checkText(
       );
     if (value.length > maxLength)
       throw new Error(
-        `Text must be less than or equal to ${minLength} characters`
+        `Text must be less than or equal to ${maxLength} characters`
       );
   });
 }
