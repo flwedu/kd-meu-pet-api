@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { checkNotNull } from "../../utils/validate";
 
 namespace User {
   export enum Role {
@@ -20,6 +21,8 @@ namespace User {
     props: Props;
 
     constructor(props: Props, id?: string) {
+      checkNotNull(props);
+
       this.props = props;
       this.id = id || crypto.randomUUID();
     }

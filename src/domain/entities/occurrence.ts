@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { checkNotNull } from "../../utils/validate";
 
 namespace Occurrence {
   export enum Type {
@@ -18,6 +19,8 @@ namespace Occurrence {
     props: Props;
 
     constructor(props: Props, id?: string) {
+      checkNotNull(props);
+
       this.props = props;
       this.id = id || crypto.randomUUID();
     }

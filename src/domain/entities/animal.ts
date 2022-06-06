@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { checkNotNull } from "../../utils/validate";
 
 namespace Animal {
   export enum Type {
@@ -23,6 +24,8 @@ namespace Animal {
     props: Props;
 
     constructor(props: Props, id?: string) {
+      checkNotNull(props);
+
       this.props = props;
       this.id = id || crypto.randomUUID();
     }
