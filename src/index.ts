@@ -1,8 +1,11 @@
 import chalk from "chalk";
 import { configureExpress } from "./config/config-express-app";
+import { getInMemoryRepositories } from "./config/configure-repositories-in-memory";
 
 const PORT = process.env.PORT || 3000;
-const app = configureExpress(null);
+
+const repositories = getInMemoryRepositories();
+const app = configureExpress(repositories);
 
 function logProcessStart() {
   const host = "http://localhost";
