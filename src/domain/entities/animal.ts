@@ -11,7 +11,7 @@ namespace Animal {
 
   export type Props = {
     name: string;
-    colors: string;
+    colors: string[];
     description: string;
     photo: string;
     lastSeenLocation: string;
