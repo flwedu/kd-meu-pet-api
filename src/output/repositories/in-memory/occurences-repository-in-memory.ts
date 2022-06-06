@@ -1,21 +1,21 @@
-import Occurence from "../../../domain/entities/occurence";
+import Occurrence from "../../../domain/entities/occurrence";
 import IRepository from "../repository-interface";
 import InMemoryBaseRepository from "./in-memory-base-repository";
 
-class OccurencesRepositoryInMemory implements IRepository<Occurence.Entity> {
-  private base = new InMemoryBaseRepository<Occurence.Entity>();
+class OccurrencesRepositoryInMemory implements IRepository<Occurrence.Entity> {
+  private base = new InMemoryBaseRepository<Occurrence.Entity>();
 
   findAll() {
     return this.base.findAll();
   }
 
-  save(entity: Occurence.Entity): Promise<string> {
+  save(entity: Occurrence.Entity): Promise<string> {
     return this.base.save(entity);
   }
-  findById(id: string): Promise<Occurence.Entity> {
+  findById(id: string): Promise<Occurrence.Entity> {
     return this.base.findById(id);
   }
-  update(entity: Occurence.Entity, id: string): Promise<string> {
+  update(entity: Occurrence.Entity, id: string): Promise<string> {
     return this.base.update(entity, id);
   }
   delete(id: string): Promise<boolean> {
@@ -23,4 +23,4 @@ class OccurencesRepositoryInMemory implements IRepository<Occurence.Entity> {
   }
 }
 
-export default OccurencesRepositoryInMemory;
+export default OccurrencesRepositoryInMemory;

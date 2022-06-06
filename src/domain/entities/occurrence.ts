@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-namespace Occurence {
+namespace Occurrence {
   export enum Type {
     DISAPPEARANCE,
     SIGHTING,
@@ -24,4 +24,4 @@ namespace Occurence {
   }
 }
 
-export default Occurence;
+export default Occurrence;
