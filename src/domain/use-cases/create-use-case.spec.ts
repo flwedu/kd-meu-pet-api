@@ -45,7 +45,7 @@ describe("test for Use Case - Create", () => {
       async (invalidEntityName) => {
         let repository: IRepository<typeof Entity>;
         try {
-          //@ts-expect-error
+          //@ts-ignore
           makeCreateUseCaseFn<typeof Entity>(repository, invalidEntityName);
         } catch (error) {
           expect.assertions(1);
