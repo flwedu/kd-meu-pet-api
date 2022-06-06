@@ -14,14 +14,13 @@ import {
 import Animal from "../entities/animal";
 import Occurrence from "../entities/occurrence";
 
-describe.each`
-  entity               | entityName       | createRepository                             | props
-  ${User.Entity}       | ${"users"}       | ${() => new UsersRepositoryInMemory()}       | ${createFakeUser({}).props}
-  ${Animal.Entity}     | ${"animals"}     | ${() => new AnimalsRepositoryInMemory()}     | ${createFakeAnimal({}).props}
-  ${Occurrence.Entity} | ${"occurrences"} | ${() => new OccurrencesRepositoryInMemory()} | ${createFakeOccurrence({}).props}
-`(
-  "# Create Use Case function to $entity #",
-  ({ entity, entityName, createRepository, props }) => {
+describe("test for Use Case - Create", () => {
+  describe.each`
+    Entity               | entityName       | createRepository                             | props
+    ${User.Entity}       | ${"users"}       | ${() => new UsersRepositoryInMemory()}       | ${createFakeUser({}).props}
+    ${Animal.Entity}     | ${"animals"}     | ${() => new AnimalsRepositoryInMemory()}     | ${createFakeAnimal({}).props}
+    ${Occurrence.Entity} | ${"occurrences"} | ${() => new OccurrencesRepositoryInMemory()} | ${createFakeOccurrence({}).props}
+  `("# to $entityName #", ({ Entity, entityName, createRepository, props }) => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
@@ -29,7 +28,7 @@ describe.each`
     test("given valid props, should save a entity and return the Id", async () => {
       const repository = createRepository();
       const spy = jest.spyOn(repository, "save");
-      const sut = makeCreateUseCaseFn<typeof entity>(repository, entityName);
+      const sut = makeCreateUseCaseFn<typeof Entity>(repository, entityName);
 
       const createdId = await sut(props);
 
@@ -44,15 +43,15 @@ describe.each`
     test.each(["animal", null, undefined, "xyz", ""])(
       "Given a invalid entityName, should throw an Error",
       async (invalidEntityName) => {
-        let repository: IRepository<typeof entity>;
+        let repository: IRepository<typeof Entity>;
         try {
           //@ts-expect-error
-          makeCreateUseCaseFn<Animal.Entity>(repository, invalidEntityName);
+          makeCreateUseCaseFn<typeof Entity>(repository, invalidEntityName);
         } catch (error) {
           expect.assertions(1);
           expect(error).toBeTruthy();
         }
       }
     );
-  }
-);
+  });
+});
