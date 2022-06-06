@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { makeFindByIdUseCase } from "../../domain/use-cases";
 import IRepository from "../../output/repositories/repository-interface";
 
-function makeFindByIdController<T>(repository: IRepository<T>) {
+export function makeFindByIdController<T>(repository: IRepository<T>) {
   return async (req: Request, res: Response) => {
     const id = req.params.id;
     const findByIdUseCase = makeFindByIdUseCase<T>(repository);
@@ -14,5 +14,3 @@ function makeFindByIdController<T>(repository: IRepository<T>) {
     }
   };
 }
-
-export { makeFindByIdController };

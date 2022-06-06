@@ -3,7 +3,7 @@ import Animal from "../entities/animal";
 import Occurrence from "../entities/occurrence";
 import User from "../entities/user";
 
-function makeCreateUseCaseFn<T>(
+export default function makeCreateUseCaseFn<T>(
   repository: IRepository<T>,
   entityName: "users" | "animals" | "occurrences"
 ) {
@@ -24,5 +24,3 @@ function getEntityFactory(entityName: "users" | "animals" | "occurrences") {
   };
   return factories[entityName];
 }
-
-export default makeCreateUseCaseFn;

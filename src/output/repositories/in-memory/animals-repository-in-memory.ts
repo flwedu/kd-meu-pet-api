@@ -2,7 +2,9 @@ import Animal from "../../../domain/entities/animal";
 import IRepository from "../repository-interface";
 import InMemoryBaseRepository from "./in-memory-base-repository";
 
-class AnimalsRepositoryInMemory implements IRepository<Animal.Entity> {
+export default class AnimalsRepositoryInMemory
+  implements IRepository<Animal.Entity>
+{
   private base = new InMemoryBaseRepository<Animal.Entity>();
 
   findAll(): Promise<Animal.Entity[]> {
@@ -21,5 +23,3 @@ class AnimalsRepositoryInMemory implements IRepository<Animal.Entity> {
     return this.base.delete(id);
   }
 }
-
-export default AnimalsRepositoryInMemory;

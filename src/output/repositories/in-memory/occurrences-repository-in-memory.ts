@@ -2,7 +2,9 @@ import Occurrence from "../../../domain/entities/occurrence";
 import IRepository from "../repository-interface";
 import InMemoryBaseRepository from "./in-memory-base-repository";
 
-class OccurrencesRepositoryInMemory implements IRepository<Occurrence.Entity> {
+export default class OccurrencesRepositoryInMemory
+  implements IRepository<Occurrence.Entity>
+{
   private base = new InMemoryBaseRepository<Occurrence.Entity>();
 
   findAll() {
@@ -22,5 +24,3 @@ class OccurrencesRepositoryInMemory implements IRepository<Occurrence.Entity> {
     return this.base.delete(id);
   }
 }
-
-export default OccurrencesRepositoryInMemory;

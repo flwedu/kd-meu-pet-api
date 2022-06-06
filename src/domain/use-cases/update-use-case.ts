@@ -1,6 +1,6 @@
 import IRepository from "../../output/repositories/repository-interface";
 
-function makeUpdateUseCaseFn<T>(
+export default function makeUpdateUseCaseFn<T>(
   repository: IRepository<T>,
   createFn: (_: any, id: string) => any
 ) {
@@ -9,5 +9,3 @@ function makeUpdateUseCaseFn<T>(
     return repository.update(updated, id);
   };
 }
-
-export default makeUpdateUseCaseFn;

@@ -2,7 +2,9 @@ import User from "../../../domain/entities/user";
 import InMemoryBaseRepository from "../in-memory/in-memory-base-repository";
 import IRepository from "../repository-interface";
 
-class UsersRepositoryInMemory implements IRepository<User.Entity> {
+export default class UsersRepositoryInMemory
+  implements IRepository<User.Entity>
+{
   private base = new InMemoryBaseRepository<User.Entity>();
 
   findAll() {
@@ -22,5 +24,3 @@ class UsersRepositoryInMemory implements IRepository<User.Entity> {
     return this.base.delete(id);
   }
 }
-
-export default UsersRepositoryInMemory;

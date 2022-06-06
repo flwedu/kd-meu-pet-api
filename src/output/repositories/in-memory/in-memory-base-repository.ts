@@ -1,4 +1,4 @@
-class InMemoryBaseRepository<T extends { id: string }> {
+export default class InMemoryBaseRepository<T extends { id: string }> {
   private list: T[] = [];
   constructor() {}
 
@@ -41,5 +41,3 @@ class InMemoryBaseRepository<T extends { id: string }> {
     return Promise.reject("Can't save entity");
   }
 }
-
-export default InMemoryBaseRepository;
