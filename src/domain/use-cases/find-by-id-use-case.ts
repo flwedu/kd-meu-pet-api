@@ -4,4 +4,4 @@ function makeFindByIdUseCase<T>(repository: IRepository<T>) {
   return async (id: string) => repository.findById(id);
 }
 
-export { makeFindByIdUseCase };
+export default makeFindByIdUseCase;

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { makeFindByIdUseCase } from "../../domain/use-cases/find-by-id-use-case";
+import { makeFindByIdUseCase } from "../../domain/use-cases";
 import IRepository from "../../output/repositories/repository-interface";
 
 function makeFindByIdController<T>(repository: IRepository<T>) {
