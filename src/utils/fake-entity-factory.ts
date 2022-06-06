@@ -1,14 +1,16 @@
+import { faker } from "@faker-js/faker";
 import Animal from "../domain/entities/animal";
+import Occurrence from "../domain/entities/occurrence";
 import User from "../domain/entities/user";
 
 export function createFakeUser(props: any, id?: string) {
   const finalProps = Object.assign(
     {
-      username: "testUsernameAdmin",
-      password: "test",
-      email: "test@example.com",
-      fullName: "John Smith",
-      profilePic: "",
+      username: faker.internet.userName(),
+      password: faker.internet.password(5),
+      email: faker.internet.email(),
+      fullName: faker.name.firstName(),
+      profilePic: faker.internet.avatar(),
     },
     props
   );
@@ -21,12 +23,12 @@ export function createFakeUser(props: any, id?: string) {
 export function createFakeAnimal(props: any, id?: string) {
   const finalProps = Object.assign(
     {
-      name: "Bibi",
+      name: faker.animal.cat(),
       colors: ["black", "white"],
-      description: "",
+      description: faker.lorem.words(3),
       type: Animal.Type.CAT,
       photo: "",
-      lastSeenLocation: "",
+      lastSeenLocation: faker.address.nearbyGPSCoordinate().join(),
     },
     props
   );
@@ -34,5 +36,20 @@ export function createFakeAnimal(props: any, id?: string) {
   return {
     props: finalProps,
     entity: new Animal.Entity(finalProps, id),
+  };
+}
+
+export function createFakeOccurrence(props: any) {
+  const finalProps = Object.assign(
+    {
+      type: Occurrence.Type.SIGHTING,
+      geoLocation: faker.address.nearbyGPSCoordinate().join(),
+    },
+    props
+  );
+
+  return {
+    props: finalProps,
+    entity: new Occurrence.Entity(finalProps),
   };
 }
