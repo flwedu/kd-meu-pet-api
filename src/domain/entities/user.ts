@@ -23,8 +23,8 @@ namespace User {
     constructor(props: Props, id?: string) {
       checkNotNull(props);
       checkEmail(props.email);
-      checkText(3, 15, props.username);
-      checkText(3, 50, props.fullName);
+      checkText(1, 30, props.username);
+      checkText(1, 50, props.fullName);
 
       this.props = props;
       this.id = id || crypto.randomUUID();
