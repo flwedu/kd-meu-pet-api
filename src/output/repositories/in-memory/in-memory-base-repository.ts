@@ -1,3 +1,6 @@
+import DatabaseError from "../../../domain/errors/database-error";
+import NotFoundError from "../../../domain/errors/not-found";
+
 export default class InMemoryBaseRepository<T extends { id: string }> {
   private list: T[] = [];
   constructor() {}
@@ -12,14 +15,14 @@ export default class InMemoryBaseRepository<T extends { id: string }> {
     if (oldLength < this.list.length) {
       return Promise.resolve(entity.id);
     }
-    return Promise.reject("Can't save entity");
+    throw new DatabaseError("Could't save entity");
   }
   findById(id: string): Promise<T> {
     const sameId = (el: T) => el.id == id;
     const find = this.list.find(sameId);
 
     if (!!find) return Promise.resolve(find);
-    return Promise.reject("Not found");
+    throw new NotFoundError();
   }
   update(entity: T, id: string): Promise<string> {
     const sameId = (el: T) => el.id == id;
@@ -29,7 +32,7 @@ export default class InMemoryBaseRepository<T extends { id: string }> {
       this.list[entityIndex] = entity;
       return Promise.resolve(entity.id);
     }
-    return Promise.reject("Not found");
+    throw new NotFoundError();
   }
   delete(id: string): Promise<boolean> {
     const notSameId = (el: T) => el.id !== id;
@@ -38,6 +41,6 @@ export default class InMemoryBaseRepository<T extends { id: string }> {
     if (oldLength > this.list.length) {
       return Promise.resolve(true);
     }
-    return Promise.reject("Can't save entity");
+    throw new DatabaseError("Could't delete entity");
   }
 }
