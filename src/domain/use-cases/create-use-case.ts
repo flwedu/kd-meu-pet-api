@@ -11,16 +11,18 @@ export default function makeCreateUseCaseFn<T>(
     const createFn = getEntityFactory(entityName);
     const entity = createFn(props);
 
-    //@ts-ignore
     return repository.save(entity);
   };
 }
 
-function getEntityFactory(entityName: "users" | "animals" | "occurrences") {
+function getEntityFactory(entityName: string) {
+  const notWordRegex = /\W/g;
+  const name = entityName.replace(notWordRegex, "");
+
   const factories = {
     users: (props: User.Props) => new User.Entity(props),
     animals: (props: Animal.Props) => new Animal.Entity(props),
     occurrences: (props: Occurrence.Props) => new Occurrence.Entity(props),
   };
-  return factories[entityName];
+  return factories[name];
 }
