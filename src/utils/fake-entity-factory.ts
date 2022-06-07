@@ -9,7 +9,7 @@ export function createFakeUser(props: any, id?: string) {
       username: faker.internet.userName(),
       password: faker.internet.password(5),
       email: faker.internet.email(),
-      fullName: faker.name.firstName(),
+      fullName: `${faker.name.firstName()} ${faker.name.lastName()}`,
       profilePic: faker.internet.avatar(),
     },
     props
