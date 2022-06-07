@@ -1,8 +1,22 @@
 import { Router } from "express";
+import Animal from "../domain/entities/animal";
+import { makeCreateController } from "../input/controllers/create-controller";
+import { makeDeleteController } from "../input/controllers/delete-controller";
+import { makeFindByIdController } from "../input/controllers/find-by-id-controller";
 
 export default function (router: Router, repositories: any) {
-  // router.get("/animals:id", loadAnimalController)
-  // router.post("/animals", createAnimalController)
+  const findByIdController = makeFindByIdController<Animal.Entity>(
+    repositories.animals
+  );
+  const createController = makeCreateController<Animal.Entity>(
+    repositories.animals
+  );
+  const deleteController = makeDeleteController<Animal.Entity>(
+    repositories.animals
+  );
+
+  router.get("/animals:id", findByIdController);
+  router.post("/animals", createController);
   // router.put("/animals:id", updateAnimalController)
-  // router.delete("/animals:id", deleteAnimalController)
+  router.delete("/animals:id", deleteController);
 }
