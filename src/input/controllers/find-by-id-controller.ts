@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { makeFindByIdUseCase } from "../../domain/use-cases";
 import IRepository from "../../output/repositories/repository-interface";
+import { createErrorResponse } from "../response-factory/error-response-factory";
 
 export function makeFindByIdController<T>(repository: IRepository<T>) {
   return async (req: Request, res: Response) => {
@@ -10,7 +11,7 @@ export function makeFindByIdController<T>(repository: IRepository<T>) {
       const result = await findByIdUseCase(id);
       return res.status(200).json(result);
     } catch (error) {
-      return res.status(404).send(error.message);
+      return createErrorResponse(error, res);
     }
   };
 }
