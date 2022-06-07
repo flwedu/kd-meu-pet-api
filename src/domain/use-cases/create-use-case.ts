@@ -7,7 +7,7 @@ export default function makeCreateUseCaseFn<T>(
   repository: IRepository<T>,
   entityName: "users" | "animals" | "occurrences"
 ) {
-  return async (props: any) => {
+  return (props: any) => {
     const createFn = getEntityFactory(entityName);
     const entity = createFn(props);
 
