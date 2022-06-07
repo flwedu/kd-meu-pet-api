@@ -13,6 +13,7 @@ import {
 } from "../../utils/fake-entity-factory";
 import Animal from "../entities/animal";
 import Occurrence from "../entities/occurrence";
+import ValidationError from "../errors/validation-error";
 
 describe("test for Use Case - Create", () => {
   describe.each`
@@ -40,16 +41,32 @@ describe("test for Use Case - Create", () => {
         props,
       });
     });
+
+    test("given empty props, should throw an error", async () => {
+      const repository = createRepository();
+      const spy = jest.spyOn(repository, "save");
+      const sut = makeCreateUseCaseFn<typeof Entity>(repository, entityName);
+
+      expect.assertions(2);
+      try {
+        await sut({});
+      } catch (error) {
+        expect(error).toBeInstanceOf(ValidationError);
+        expect(spy).toHaveBeenCalledTimes(0);
+      }
+    });
+
     test.each(["animal", null, undefined, "xyz", ""])(
-      "Given a invalid entityName, should throw an Error",
+      "Given a invalid entityName to $entityName, should throw an Error",
       async (invalidEntityName) => {
         let repository: IRepository<typeof Entity>;
+
         try {
           //@ts-ignore
           makeCreateUseCaseFn<typeof Entity>(repository, invalidEntityName);
         } catch (error) {
           expect.assertions(1);
-          expect(error).toBeTruthy();
+          expect(error).toBeInstanceOf(Error);
         }
       }
     );
