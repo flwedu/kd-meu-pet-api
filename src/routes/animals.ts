@@ -18,11 +18,11 @@ export default function (router: Router, repositories: any) {
     repositories.animals
   );
   const updateController = makeUpdateController<Animal.Entity>(
-    repositories.users
+    repositories.animals
   );
 
-  router.get("/animals:id", findByIdController);
+  router.get("/animals/:id", findByIdController);
   router.post("/animals", registerController);
-  router.put("/animals:id", updateController);
-  router.delete("/animals:id", deleteController);
+  router.put("/animals/:id", updateController);
+  router.delete("/animals/:id", deleteController);
 }
