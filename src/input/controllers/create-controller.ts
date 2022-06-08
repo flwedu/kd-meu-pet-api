@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { makeCreateUseCaseFn } from "../../domain/use-cases";
 import IRepository from "../../output/repositories/repository-interface";
 import { createErrorResponse } from "../response-factory/error-response-factory";
+import { createSuccessResponse } from "../response-factory/success-response-factory";
 
 export function makeCreateController<T>(repository: IRepository<T>) {
   return async (req: Request, res: Response) => {
@@ -16,7 +17,7 @@ export function makeCreateController<T>(repository: IRepository<T>) {
 
     try {
       const id = await createUseCase(props);
-      return res.status(201).json({ created: id });
+      return createSuccessResponse(res).created(id);
     } catch (error) {
       return createErrorResponse(error, res);
     }
