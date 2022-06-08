@@ -1,25 +1,15 @@
 import supertest from "supertest";
 import { configureExpress } from "../config/config-express-app";
-import User from "../domain/entities/user";
-import UsersRepositoryInMemory from "../output/repositories/in-memory/users-repository-in-memory";
+import { UsersRepositoryInMemory } from "../output/repositories/in-memory";
+import { createFakeUser } from "../utils/fake-entity-factory";
 
 describe("## load user routes ##", () => {
-  const users = new UsersRepositoryInMemory();
-  users.save({
-    id: "1",
-    props: {
-      fullName: "John Test",
-      email: "test@example.com",
-      password: "",
-      role: User.Role.ADMIN,
-      profilePic: "",
-      username: "test",
-    },
-  });
-  const app = configureExpress({ users });
+  const repository = new UsersRepositoryInMemory();
+  const app = configureExpress({ users: repository });
 
   describe("When #GET to api/users/:id", () => {
-    test("for a valid user, should return 200 OK", async () => {
+    test("for a valid id, should return 200 OK", async () => {
+      await repository.save(createFakeUser({}, "1").entity);
       await supertest(app).get("/api/users/1").expect(200);
     });
 
