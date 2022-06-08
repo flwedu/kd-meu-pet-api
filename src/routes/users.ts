@@ -1,8 +1,10 @@
 import { Router } from "express";
 import User from "../domain/entities/user";
-import { makeCreateController } from "../input/controllers/create-controller";
-import { makeDeleteController } from "../input/controllers/delete-controller";
-import { makeFindByIdController } from "../input/controllers/find-by-id-controller";
+import {
+  makeFindByIdController,
+  makeRegisterController,
+  makeDeleteController,
+} from "../input/controllers";
 
 export default function (router: Router, repositories: any) {
   const findByIdController = makeFindByIdController<User.Entity>(
