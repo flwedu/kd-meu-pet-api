@@ -16,8 +16,9 @@ export function makeRegisterController<T>(repository: IRepository<T>) {
     );
 
     try {
-      const id = await registerUseCase(props);
-      return createSuccessResponse(res).created(id);
+      const id = props.id;
+      const createdId = await registerUseCase(props, id);
+      return createSuccessResponse(res).created(createdId);
     } catch (error) {
       return createErrorResponse(error, res);
     }

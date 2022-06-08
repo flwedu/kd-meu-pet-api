@@ -9,9 +9,10 @@ export function getEntityBuilder(entityName: string) {
   const name = entityName.replace(notWordRegex, "");
 
   const factories = {
-    users: (props: User.Props) => new User.Entity(props),
-    animals: (props: Animal.Props) => new Animal.Entity(props),
-    occurrences: (props: Occurrence.Props) => new Occurrence.Entity(props),
+    users: (props: User.Props, id?: string) => new User.Entity(props, id),
+    animals: (props: Animal.Props, id?: string) => new Animal.Entity(props, id),
+    occurrences: (props: Occurrence.Props, id?: string) =>
+      new Occurrence.Entity(props, id),
   };
   return factories[name];
 }
