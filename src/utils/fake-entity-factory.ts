@@ -44,6 +44,7 @@ export function createFakeOccurrence(props: any) {
     {
       type: Occurrence.Type.SIGHTING,
       geoLocation: faker.address.nearbyGPSCoordinate().join(),
+      userId: "1",
     },
     props
   );

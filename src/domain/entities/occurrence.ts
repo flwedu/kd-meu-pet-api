@@ -12,6 +12,7 @@ namespace Occurrence {
     type: Type;
     geoLocation: string;
     animalId?: string;
+    userId: string;
   };
 
   export class Entity {
