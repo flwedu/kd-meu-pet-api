@@ -8,7 +8,7 @@ export default function (router: Router, repositories: any) {
   const findByIdController = makeFindByIdController<Animal.Entity>(
     repositories.animals
   );
-  const createController = makeCreateController<Animal.Entity>(
+  const registerController = makeRegisterController<Animal.Entity>(
     repositories.animals
   );
   const deleteController = makeDeleteController<Animal.Entity>(
@@ -16,7 +16,7 @@ export default function (router: Router, repositories: any) {
   );
 
   router.get("/animals:id", findByIdController);
-  router.post("/animals", createController);
+  router.post("/animals", registerController);
   // router.put("/animals:id", updateAnimalController)
   router.delete("/animals:id", deleteController);
 }

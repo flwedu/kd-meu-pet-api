@@ -8,7 +8,7 @@ export default function (router: Router, repositories: any) {
   const findByIdController = makeFindByIdController<User.Entity>(
     repositories.users
   );
-  const createController = makeCreateController<User.Entity>(
+  const registerController = makeRegisterController<User.Entity>(
     repositories.users
   );
   const deleteController = makeDeleteController<User.Entity>(
@@ -16,7 +16,7 @@ export default function (router: Router, repositories: any) {
   );
 
   router.get("/users/:id", findByIdController);
-  router.post("/users", createController);
+  router.post("/users", registerController);
   // router.put("/users/:id", updateUserController)
   router.delete("/users/:id", deleteController);
 }

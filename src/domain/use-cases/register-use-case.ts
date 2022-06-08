@@ -1,7 +1,7 @@
 import IRepository from "../../output/repositories/repository-interface";
 import { EntityName, getEntityBuilder } from "../../utils/entity-builder";
 
-export default function makeCreateUseCaseFn<T>(
+export default function makeRegisterUseCaseFn<T>(
   repository: IRepository<T>,
   entityName: EntityName
 ) {

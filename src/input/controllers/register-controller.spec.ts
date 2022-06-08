@@ -8,7 +8,7 @@ import {
   UsersRepositoryInMemory,
   AnimalsRepositoryInMemory,
 } from "../../output/repositories/in-memory";
-import { makeCreateController } from "./create-controller";
+import { makeRegisterController } from "./";
 import Animal from "../../domain/entities/animal";
 
 describe("# Controller - Create #", () => {
@@ -30,7 +30,7 @@ describe("# Controller - Create #", () => {
     });
 
     test("For a success creation, should call res.status() with 201 status code", async () => {
-      const controller = makeCreateController(repository);
+      const controller = makeRegisterController(repository);
       const req = {
         path,
         body,
@@ -45,7 +45,7 @@ describe("# Controller - Create #", () => {
     });
 
     test("For a empty body, should call res.status() with 400 status code", async () => {
-      const controller = makeCreateController(repository);
+      const controller = makeRegisterController(repository);
       const req = {
         path,
         body: {},

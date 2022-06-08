@@ -1,11 +1,11 @@
 import User from "../entities/user";
+import { makeRegisterUseCaseFn } from "./";
 import IRepository from "../../output/repositories/repository-interface";
 import {
   AnimalsRepositoryInMemory,
   OccurrencesRepositoryInMemory,
   UsersRepositoryInMemory,
 } from "../../output/repositories/in-memory";
-import makeCreateUseCaseFn from "./create-use-case";
 import {
   createFakeUser,
   createFakeAnimal,
@@ -15,7 +15,7 @@ import Animal from "../entities/animal";
 import Occurrence from "../entities/occurrence";
 import ValidationError from "../errors/validation-error";
 
-describe("test for Use Case - Create", () => {
+describe("test for Use Case - Register", () => {
   describe.each`
     Entity               | entityName       | createRepository                             | props
     ${User.Entity}       | ${"users"}       | ${() => new UsersRepositoryInMemory()}       | ${createFakeUser({}).props}
@@ -29,7 +29,7 @@ describe("test for Use Case - Create", () => {
     test("given valid props, should save a entity and return the Id", async () => {
       const repository = createRepository();
       const spy = jest.spyOn(repository, "save");
-      const sut = makeCreateUseCaseFn<typeof Entity>(repository, entityName);
+      const sut = makeRegisterUseCaseFn<typeof Entity>(repository, entityName);
 
       const createdId = await sut(props);
 
@@ -45,7 +45,7 @@ describe("test for Use Case - Create", () => {
     test("given empty props, should throw an error", async () => {
       const repository = createRepository();
       const spy = jest.spyOn(repository, "save");
-      const sut = makeCreateUseCaseFn<typeof Entity>(repository, entityName);
+      const sut = makeRegisterUseCaseFn<typeof Entity>(repository, entityName);
 
       expect.assertions(2);
       try {
@@ -63,7 +63,7 @@ describe("test for Use Case - Create", () => {
 
         try {
           //@ts-ignore
-          makeCreateUseCaseFn<typeof Entity>(repository, invalidEntityName);
+          makeRegisterUseCaseFn<typeof Entity>(repository, invalidEntityName);
         } catch (error) {
           expect.assertions(1);
           expect(error).toBeInstanceOf(Error);
