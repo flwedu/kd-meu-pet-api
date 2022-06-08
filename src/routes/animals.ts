@@ -4,6 +4,7 @@ import {
   makeDeleteController,
   makeFindByIdController,
   makeRegisterController,
+  makeUpdateController,
 } from "../input/controllers";
 
 export default function (router: Router, repositories: any) {
@@ -16,9 +17,12 @@ export default function (router: Router, repositories: any) {
   const deleteController = makeDeleteController<Animal.Entity>(
     repositories.animals
   );
+  const updateController = makeUpdateController<Animal.Entity>(
+    repositories.users
+  );
 
   router.get("/animals:id", findByIdController);
   router.post("/animals", registerController);
-  // router.put("/animals:id", updateAnimalController)
+  router.put("/animals:id", updateController);
   router.delete("/animals:id", deleteController);
 }
