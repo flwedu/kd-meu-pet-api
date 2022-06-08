@@ -7,6 +7,12 @@ export function createErrorResponse(error: Error, res: Response) {
         type: error.name,
         message: error.message,
       }),
+    AuthenticationError: () => {
+      res.status(401).json({
+        type: error.name,
+        message: error.message,
+      });
+    },
     NotFoundError: () =>
       res.status(404).json({
         type: error.name,
