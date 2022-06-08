@@ -1,11 +1,13 @@
 import IRepository from "../../output/repositories/repository-interface";
+import { getEntityBuilder } from "../../utils/entity-builder";
 
 export default function makeUpdateUseCaseFn<T>(
   repository: IRepository<T>,
-  createFn: (_: any, id: string) => any
+  entityName: "users" | "animals" | "occurrences"
 ) {
   return (props: any, id: string) => {
-    const updated = createFn(props, id);
+    const builder = getEntityBuilder(entityName);
+    const updated = builder(props, id);
     return repository.update(updated, id);
   };
 }
