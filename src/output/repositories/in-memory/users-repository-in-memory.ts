@@ -11,6 +11,10 @@ export default class UsersRepositoryInMemory
     return this.base.findAll();
   }
 
+  findOne(query: object) {
+    return this.base.findOne(query);
+  }
+
   save(entity: User.Entity): Promise<string> {
     return this.base.save(entity);
   }

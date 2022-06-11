@@ -1,12 +1,27 @@
 import DatabaseError from "../../../domain/errors/database-error";
 import NotFoundError from "../../../domain/errors/not-found";
+import IRepository from "../repository-interface";
 
-export default class InMemoryBaseRepository<T extends { id: string }> {
+export default class InMemoryBaseRepository<T extends { id: string }>
+  implements IRepository<T>
+{
   private list: T[] = [];
   constructor() {}
 
   findAll(): Promise<T[]> {
     return Promise.resolve(this.list);
+  }
+
+  findOne(query: object): Promise<T> {
+    const found = this.list.find((el: T) => {
+      return Object.keys(query).every((key: string) => {
+        return el[key] === query[key];
+      });
+    });
+    if (found) {
+      return Promise.resolve(found);
+    }
+    throw new NotFoundError();
   }
 
   save(entity: T): Promise<string> {

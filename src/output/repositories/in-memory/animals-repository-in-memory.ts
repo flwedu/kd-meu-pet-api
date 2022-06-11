@@ -13,6 +13,10 @@ export default class AnimalsRepositoryInMemory
   save(entity: Animal.Entity): Promise<string> {
     return this.base.save(entity);
   }
+
+  findOne(query: object): Promise<Animal.Entity> {
+    return this.base.findOne(query);
+  }
   findById(id: string): Promise<Animal.Entity> {
     return this.base.findById(id);
   }

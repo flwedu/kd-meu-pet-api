@@ -17,6 +17,10 @@ export default class OccurrencesRepositoryInMemory
   findById(id: string): Promise<Occurrence.Entity> {
     return this.base.findById(id);
   }
+  findOne(query: object): Promise<Occurrence.Entity> {
+    return this.base.findOne(query);
+  }
+
   update(entity: Occurrence.Entity, id: string): Promise<string> {
     return this.base.update(entity, id);
   }
