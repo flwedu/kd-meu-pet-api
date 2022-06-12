@@ -10,8 +10,10 @@ import {
 } from "../../output/repositories/in-memory";
 import { makeRegisterController } from "./";
 import Animal from "../../domain/entities/animal";
+import { makeBcryptEncryptor } from "../../security/bcrypt";
 
 describe("# Controller - Create #", () => {
+  const encryptor = makeBcryptEncryptor("secret");
   describe.each`
     Entity           | createNewRepository                      | path         | body
     ${User.Entity}   | ${() => new UsersRepositoryInMemory()}   | ${"users"}   | ${createFakeUser({}).props}
@@ -30,7 +32,7 @@ describe("# Controller - Create #", () => {
     });
 
     test("For a success creation, should call res.status() with 201 status code", async () => {
-      const controller = makeRegisterController(repository);
+      const controller = makeRegisterController(repository, encryptor);
       const req = {
         path,
         body,
@@ -45,7 +47,7 @@ describe("# Controller - Create #", () => {
     });
 
     test("For a empty body, should call res.status() with 400 status code", async () => {
-      const controller = makeRegisterController(repository);
+      const controller = makeRegisterController(repository, encryptor);
       const req = {
         path,
         body: {},

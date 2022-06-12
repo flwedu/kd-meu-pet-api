@@ -14,8 +14,10 @@ import {
 import Animal from "../entities/animal";
 import Occurrence from "../entities/occurrence";
 import ValidationError from "../errors/validation-error";
+import { makeBcryptEncryptor } from "../../security/bcrypt";
 
 describe("test for Use Case - Register", () => {
+  const encryptor = makeBcryptEncryptor("secret");
   describe.each`
     Entity               | entityName       | createRepository                             | props
     ${User.Entity}       | ${"users"}       | ${() => new UsersRepositoryInMemory()}       | ${createFakeUser({}).props}
@@ -29,7 +31,11 @@ describe("test for Use Case - Register", () => {
     test("given valid props, should save a entity and return the Id", async () => {
       const repository = createRepository();
       const spy = jest.spyOn(repository, "save");
-      const sut = makeRegisterUseCaseFn<typeof Entity>(repository, entityName);
+      const sut = makeRegisterUseCaseFn<typeof Entity>(
+        repository,
+        entityName,
+        encryptor
+      );
 
       const createdId = await sut(props);
 
@@ -45,7 +51,11 @@ describe("test for Use Case - Register", () => {
     test("given empty props, should throw an error", async () => {
       const repository = createRepository();
       const spy = jest.spyOn(repository, "save");
-      const sut = makeRegisterUseCaseFn<typeof Entity>(repository, entityName);
+      const sut = makeRegisterUseCaseFn<typeof Entity>(
+        repository,
+        entityName,
+        encryptor
+      );
 
       expect.assertions(2);
       try {
