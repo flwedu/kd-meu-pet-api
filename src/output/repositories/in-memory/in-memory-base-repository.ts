@@ -14,9 +14,12 @@ export default class InMemoryBaseRepository<T extends { id: string }>
 
   findOne(query: object): Promise<T> {
     const found = this.list.find((el: T) => {
-      return Object.keys(query).every((key: string) => {
-        return el[key] === query[key];
-      });
+      for (const key in query) {
+        if (query[key] !== el[key]) {
+          return false;
+        }
+      }
+      return true;
     });
     if (found) {
       return Promise.resolve(found);
