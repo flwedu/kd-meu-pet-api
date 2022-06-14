@@ -1,11 +1,13 @@
 import supertest from "supertest";
 import { configureExpress } from "../config/config-express-app";
 import { OccurrencesRepositoryInMemory } from "../output/repositories/in-memory";
+import { makeBcryptEncryptor } from "../security/bcrypt";
 import { createFakeOccurrence } from "../utils/fake-entity-factory";
 
 describe("## load occurrences routes ##", () => {
   const repository = new OccurrencesRepositoryInMemory();
-  const app = configureExpress({ occurrences: repository });
+  const encryptor = makeBcryptEncryptor("secret");
+  const app = configureExpress({ occurrences: repository }, encryptor);
 
   describe("When #GET to api/occurrences/:id", () => {
     test("for a valid id, should return 200 OK", async () => {
