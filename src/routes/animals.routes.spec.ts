@@ -1,11 +1,13 @@
 import supertest from "supertest";
 import { configureExpress } from "../config/config-express-app";
 import { AnimalsRepositoryInMemory } from "../output/repositories/in-memory";
+import { makeBcryptEncryptor } from "../security/bcrypt";
 import { createFakeAnimal } from "../utils/fake-entity-factory";
 
 describe("# Animals routes #", () => {
   const repository = new AnimalsRepositoryInMemory();
-  const app = configureExpress({ animals: repository });
+  const encryptor = makeBcryptEncryptor("secret");
+  const app = configureExpress({ animals: repository }, encryptor);
 
   beforeAll(async () => {
     await repository.save(createFakeAnimal({}, "1").entity);
