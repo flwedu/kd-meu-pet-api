@@ -1,14 +1,13 @@
 import { Request, Response } from "express";
 import { makeDeleteUseCase } from "../../domain/use-cases";
 import IRepository from "../../output/repositories/repository-interface";
-import { createErrorResponse } from "../response-factory/error-response-factory";
 import { createSuccessResponse } from "../response-factory/success-response-factory";
 import { IController } from "./controller-interface";
 
 export class DeleteController<T> implements IController {
   constructor(private repository: IRepository<T>) {}
 
-  async handle(req: Request, res: Response) {
+  async handle(req: Request, res: Response, next: any) {
     const id = req.params.id;
 
     try {
@@ -18,7 +17,7 @@ export class DeleteController<T> implements IController {
       if (result) return createSuccessResponse(res).deleted(id);
       throw new Error("Error deleting");
     } catch (error) {
-      return createErrorResponse(error, res);
+      next(error);
     }
   }
 }

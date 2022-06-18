@@ -3,7 +3,6 @@ import User from "../../../domain/entities/user";
 import { makeLoginUserUseCase } from "../../../domain/use-cases/user/login-user-use-case";
 import IRepository from "../../../output/repositories/repository-interface";
 import IEncryptor from "../../../security/encryptor-interface";
-import { createErrorResponse } from "../../response-factory/error-response-factory";
 import { createSuccessResponse } from "../../response-factory/success-response-factory";
 import { IController } from "../controller-interface";
 import { LoginSession } from "./session";
@@ -29,7 +28,7 @@ export class LoginUserController implements IController {
         return createSuccessResponse(res).ok({ message: "Login successful" });
       }
     } catch (error) {
-      return createErrorResponse(error, res);
+      next(error);
     }
   }
 }

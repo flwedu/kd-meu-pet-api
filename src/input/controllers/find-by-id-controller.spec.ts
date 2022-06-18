@@ -1,3 +1,4 @@
+import NotFoundError from "../../domain/errors/not-found";
 import {
   AnimalsRepositoryInMemory,
   OccurrencesRepositoryInMemory,
@@ -25,6 +26,7 @@ describe("# Find By Id Controller tests #", () => {
       json: jest.fn(() => res),
       send: jest.fn(() => res),
     };
+    const next = jest.fn();
 
     beforeEach(async () => {
       jest.clearAllMocks();
@@ -37,23 +39,23 @@ describe("# Find By Id Controller tests #", () => {
       };
 
       //@ts-ignore
-      await controller.handle(req, res);
+      await controller.handle(req, res, next);
 
       expect.assertions(2);
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledTimes(1);
     });
 
-    test("For a inexistent user id, should call res.status() with 404 status code", async () => {
+    test("For a inexistent user id, should call next with 404 status code", async () => {
       const req = {
         params: { id: 2 },
       };
 
       //@ts-ignore
-      await controller.handle(req, res);
+      await controller.handle(req, res, next);
 
       expect.assertions(1);
-      expect(res.status).toHaveBeenCalledWith(404);
+      expect(next).toHaveBeenCalledWith(new NotFoundError());
     });
   });
 });

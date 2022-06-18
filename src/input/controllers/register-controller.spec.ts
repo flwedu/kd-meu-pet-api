@@ -1,3 +1,4 @@
+import ValidationError from "../../domain/errors/validation-error";
 import {
   AnimalsRepositoryInMemory,
   OccurrencesRepositoryInMemory,
@@ -27,6 +28,7 @@ describe("# Register Controller test #", () => {
       json: jest.fn(() => res),
       send: jest.fn(() => res),
     };
+    const next = jest.fn();
 
     beforeEach(() => {
       jest.clearAllMocks();
@@ -39,7 +41,7 @@ describe("# Register Controller test #", () => {
       };
 
       //@ts-ignore
-      await controller.handle(req, res);
+      await controller.handle(req, res, next);
 
       expect.assertions(2);
       expect(res.status).toHaveBeenCalledWith(201);
@@ -53,11 +55,11 @@ describe("# Register Controller test #", () => {
       };
 
       //@ts-ignore
-      await controller.handle(req, res);
+      await controller.handle(req, res, next);
 
       expect.assertions(2);
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledTimes(1);
+      expect(next).toHaveBeenCalledTimes(1);
+      expect(next).toHaveBeenCalledWith(expect.any(ValidationError));
     });
   });
 });
