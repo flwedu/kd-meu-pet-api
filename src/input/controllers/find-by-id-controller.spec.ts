@@ -19,6 +19,7 @@ describe("# Find By Id Controller tests #", () => {
   `("For $EntityName entities", ({ repositoryFactory, fakeEntityFactory }) => {
     let repository = repositoryFactory();
     let factory = new ControllersFactory(repository);
+    const controller = factory.getControllers().findById;
     const res = {
       status: jest.fn(() => res),
       json: jest.fn(() => res),
@@ -30,7 +31,6 @@ describe("# Find By Id Controller tests #", () => {
     });
 
     test("For a valid user id, should call res.status() with 200 status code", async () => {
-      const controller = factory.getControllers().findById;
       await repository.save(fakeEntityFactory({}, "1").entity);
       const req = {
         params: { id: 1 },
@@ -45,7 +45,6 @@ describe("# Find By Id Controller tests #", () => {
     });
 
     test("For a inexistent user id, should call res.status() with 404 status code", async () => {
-      const controller = factory.getControllers().findById;
       const req = {
         params: { id: 2 },
       };
