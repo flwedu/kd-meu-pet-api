@@ -1,26 +1,37 @@
-import User from "../../domain/entities/user";
-import { createFakeUser } from "../../utils/fake-entity-factory";
-import IRepository from "../../output/repositories/repository-interface";
-import UsersRepositoryInMemory from "../../output/repositories/in-memory/users-repository-in-memory";
-import { FindByIdController } from "./";
+import {
+  AnimalsRepositoryInMemory,
+  OccurrencesRepositoryInMemory,
+  UsersRepositoryInMemory,
+} from "../../output/repositories/in-memory/";
+import { ControllersFactory } from "../../utils/controllers-factory";
+import {
+  createFakeAnimal,
+  createFakeOccurrence,
+  createFakeUser,
+} from "../../utils/fake-entity-factory";
 
-describe("# Find By Id Controller #", () => {
-  describe("For User Entity", () => {
-    let repository: IRepository<User.Entity>;
+describe("# Find By Id Controller tests #", () => {
+  describe.each`
+    EntityName       | repositoryFactory                            | fakeEntityFactory
+    ${"users"}       | ${() => new UsersRepositoryInMemory()}       | ${createFakeUser}
+    ${"animals"}     | ${() => new AnimalsRepositoryInMemory()}     | ${createFakeAnimal}
+    ${"occurrences"} | ${() => new OccurrencesRepositoryInMemory()} | ${createFakeOccurrence}
+  `("For $EntityName entities", ({ repositoryFactory, fakeEntityFactory }) => {
+    let repository = repositoryFactory();
+    let factory = new ControllersFactory(repository);
     const res = {
       status: jest.fn(() => res),
       json: jest.fn(() => res),
       send: jest.fn(() => res),
     };
 
-    beforeEach(() => {
-      repository = new UsersRepositoryInMemory();
-      repository.save(createFakeUser({}, "1").entity);
+    beforeEach(async () => {
       jest.clearAllMocks();
     });
 
     test("For a valid user id, should call res.status() with 200 status code", async () => {
-      const controller = new FindByIdController(repository);
+      const controller = factory.getControllers().findById;
+      await repository.save(fakeEntityFactory({}, "1").entity);
       const req = {
         params: { id: 1 },
       };
@@ -34,7 +45,7 @@ describe("# Find By Id Controller #", () => {
     });
 
     test("For a inexistent user id, should call res.status() with 404 status code", async () => {
-      const controller = new FindByIdController(repository);
+      const controller = factory.getControllers().findById;
       const req = {
         params: { id: 2 },
       };
