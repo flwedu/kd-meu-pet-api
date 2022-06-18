@@ -1,25 +1,27 @@
-import User from "../../domain/entities/user";
+import {
+  AnimalsRepositoryInMemory,
+  OccurrencesRepositoryInMemory,
+  UsersRepositoryInMemory,
+} from "../../output/repositories/in-memory";
+import { makeBcryptEncryptor } from "../../security/bcrypt";
+import { ControllersFactory } from "../../utils/controllers-factory";
 import {
   createFakeAnimal,
+  createFakeOccurrence,
   createFakeUser,
 } from "../../utils/fake-entity-factory";
-import IRepository from "../../output/repositories/repository-interface";
-import {
-  UsersRepositoryInMemory,
-  AnimalsRepositoryInMemory,
-} from "../../output/repositories/in-memory";
-import { RegisterController } from "./";
-import Animal from "../../domain/entities/animal";
-import { makeBcryptEncryptor } from "../../security/bcrypt";
 
-describe("# Controller - Create #", () => {
+describe("# Register Controller test #", () => {
   const encryptor = makeBcryptEncryptor("secret");
   describe.each`
-    Entity           | createNewRepository                      | path         | body
-    ${User.Entity}   | ${() => new UsersRepositoryInMemory()}   | ${"users"}   | ${createFakeUser({}).props}
-    ${Animal.Entity} | ${() => new AnimalsRepositoryInMemory()} | ${"animals"} | ${createFakeAnimal({}).props}
-  `("For $path", ({ Entity, createNewRepository, path, body }) => {
-    let repository: IRepository<typeof Entity>;
+    repositoryFactory                            | path             | body
+    ${() => new UsersRepositoryInMemory()}       | ${"users"}       | ${createFakeUser({}).props}
+    ${() => new AnimalsRepositoryInMemory()}     | ${"animals"}     | ${createFakeAnimal({}).props}
+    ${() => new OccurrencesRepositoryInMemory()} | ${"occurrences"} | ${createFakeOccurrence({}).props}
+  `("For $path entities", ({ repositoryFactory, path, body }) => {
+    const repository = repositoryFactory();
+    const factory = new ControllersFactory(repository, encryptor);
+    const controller = factory.getControllers().register;
     const res = {
       status: jest.fn(() => res),
       json: jest.fn(() => res),
@@ -27,12 +29,10 @@ describe("# Controller - Create #", () => {
     };
 
     beforeEach(() => {
-      repository = createNewRepository();
       jest.clearAllMocks();
     });
 
     test("For a success creation, should call res.status() with 201 status code", async () => {
-      const controller = new RegisterController(repository, encryptor);
       const req = {
         path,
         body,
@@ -47,7 +47,6 @@ describe("# Controller - Create #", () => {
     });
 
     test("For a empty body, should call res.status() with 400 status code", async () => {
-      const controller = new RegisterController(repository, encryptor);
       const req = {
         path,
         body: {},
