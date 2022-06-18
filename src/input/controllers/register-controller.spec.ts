@@ -8,7 +8,7 @@ import {
   UsersRepositoryInMemory,
   AnimalsRepositoryInMemory,
 } from "../../output/repositories/in-memory";
-import { makeRegisterController } from "./";
+import { RegisterController } from "./";
 import Animal from "../../domain/entities/animal";
 import { makeBcryptEncryptor } from "../../security/bcrypt";
 
@@ -32,14 +32,14 @@ describe("# Controller - Create #", () => {
     });
 
     test("For a success creation, should call res.status() with 201 status code", async () => {
-      const controller = makeRegisterController(repository, encryptor);
+      const controller = new RegisterController(repository, encryptor);
       const req = {
         path,
         body,
       };
 
       //@ts-ignore
-      await controller(req, res);
+      await controller.handle(req, res);
 
       expect.assertions(2);
       expect(res.status).toHaveBeenCalledWith(201);
@@ -47,14 +47,14 @@ describe("# Controller - Create #", () => {
     });
 
     test("For a empty body, should call res.status() with 400 status code", async () => {
-      const controller = makeRegisterController(repository, encryptor);
+      const controller = new RegisterController(repository, encryptor);
       const req = {
         path,
         body: {},
       };
 
       //@ts-ignore
-      await controller(req, res);
+      await controller.handle(req, res);
 
       expect.assertions(2);
       expect(res.status).toHaveBeenCalledWith(400);

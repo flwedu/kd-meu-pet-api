@@ -5,17 +5,23 @@ import IRepository from "../../../output/repositories/repository-interface";
 import IEncryptor from "../../../security/encryptor-interface";
 import { createErrorResponse } from "../../response-factory/error-response-factory";
 import { createSuccessResponse } from "../../response-factory/success-response-factory";
+import { IController } from "../controller-interface";
 import { LoginSession } from "./session";
 
-export function makeLoginUserController(
-  repository: IRepository<User.Entity>,
-  encryptor: IEncryptor
-) {
-  return async (req: Request, res: Response, next: NextFunction) => {
+export class LoginUserController implements IController {
+  constructor(
+    private repository: IRepository<User.Entity>,
+    private encryptor: IEncryptor
+  ) {}
+
+  async handle(req: Request, res: Response, next: NextFunction) {
     try {
       const session = req.session as LoginSession;
       const { username, password } = req.body;
-      const loginUseCase = makeLoginUserUseCase(repository, encryptor);
+      const loginUseCase = makeLoginUserUseCase(
+        this.repository,
+        this.encryptor
+      );
       const user = await loginUseCase({ username, password });
 
       if (user) {
@@ -25,5 +31,5 @@ export function makeLoginUserController(
     } catch (error) {
       return createErrorResponse(error, res);
     }
-  };
+  }
 }

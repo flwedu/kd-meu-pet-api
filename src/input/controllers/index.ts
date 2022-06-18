@@ -1,11 +1,11 @@
-import { makeRegisterController } from "./register-controller";
-import { makeDeleteController } from "./delete-controller";
-import { makeUpdateController } from "./update-controller";
-import { makeFindByIdController } from "./find-by-id-controller";
+import { RegisterController } from "./register-controller";
+import { DeleteController } from "./delete-controller";
+import { UpdateController } from "./update-controller";
+import { FindByIdController } from "./find-by-id-controller";
 
 export {
-  makeRegisterController,
-  makeDeleteController,
-  makeUpdateController,
-  makeFindByIdController,
+  RegisterController,
+  DeleteController,
+  UpdateController,
+  FindByIdController,
 };

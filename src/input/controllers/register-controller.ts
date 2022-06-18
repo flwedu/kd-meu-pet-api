@@ -5,19 +5,22 @@ import IEncryptor from "../../security/encryptor-interface";
 import { EntityName } from "../../utils/entity-builder";
 import { createErrorResponse } from "../response-factory/error-response-factory";
 import { createSuccessResponse } from "../response-factory/success-response-factory";
+import { IController } from "./controller-interface";
 
-export function makeRegisterController<T>(
-  repository: IRepository<T>,
-  encryptor: IEncryptor
-) {
-  return async (req: Request, res: Response) => {
+export class RegisterController<T> implements IController {
+  constructor(
+    private repository: IRepository<T>,
+    private encryptor: IEncryptor
+  ) {}
+
+  async handle(req: Request, res: Response) {
     const entityName = req.path;
     const props = req.body;
 
     const registerUseCase = makeRegisterUseCaseFn<T>(
-      repository,
+      this.repository,
       entityName as EntityName,
-      encryptor
+      this.encryptor
     );
 
     try {
@@ -27,5 +30,5 @@ export function makeRegisterController<T>(
     } catch (error) {
       return createErrorResponse(error, res);
     }
-  };
+  }
 }

@@ -3,13 +3,16 @@ import { makeDeleteUseCase } from "../../domain/use-cases";
 import IRepository from "../../output/repositories/repository-interface";
 import { createErrorResponse } from "../response-factory/error-response-factory";
 import { createSuccessResponse } from "../response-factory/success-response-factory";
+import { IController } from "./controller-interface";
 
-export function makeDeleteController<T>(repository: IRepository<T>) {
-  return async (req: Request, res: Response) => {
+export class DeleteController<T> implements IController {
+  constructor(private repository: IRepository<T>) {}
+
+  async handle(req: Request, res: Response) {
     const id = req.params.id;
 
     try {
-      const useCase = makeDeleteUseCase<T>(repository);
+      const useCase = makeDeleteUseCase<T>(this.repository);
       const result = await useCase(id);
 
       if (result) return createSuccessResponse(res).deleted(id);
@@ -17,5 +20,5 @@ export function makeDeleteController<T>(repository: IRepository<T>) {
     } catch (error) {
       return createErrorResponse(error, res);
     }
-  };
+  }
 }
