@@ -13,13 +13,13 @@ export class ControllersFactory<T> {
     private encryptor?: IEncryptor
   ) {}
 
-  public findByIdController = new FindByIdController<T>(this.repository);
-  public registerController = new RegisterController<T>(
+  private findByIdController = new FindByIdController<T>(this.repository);
+  private registerController = new RegisterController<T>(
     this.repository,
     this.encryptor
   );
-  public deleteController = new DeleteController<T>(this.repository);
-  public updateController = new UpdateController<T>(this.repository);
+  private deleteController = new DeleteController<T>(this.repository);
+  private updateController = new UpdateController<T>(this.repository);
 
   public getControllers = () => {
     return {
