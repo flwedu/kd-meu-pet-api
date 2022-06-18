@@ -1,14 +1,14 @@
 import request from "supertest";
 import { configureExpress } from "../config/config-express-app";
 import User from "../domain/entities/user";
-import { UsersRepositoryInMemory } from "../output/repositories/in-memory";
+import makeInMemoryRepositoryWrapper from "../output/repositories/in-memory/in-memory-repository-wrapper";
 import { makeBcryptEncryptor } from "../security/bcrypt";
 import { createFakeUser } from "../utils/fake-entity-factory";
 
 describe("Users routes", () => {
-  const repository = new UsersRepositoryInMemory();
+  const repositories = makeInMemoryRepositoryWrapper();
   const encryptor = makeBcryptEncryptor("secret");
-  const app = configureExpress({ users: repository }, encryptor);
+  const app = configureExpress(repositories, encryptor);
 
   const adminUser = createFakeUser({
     username: "admin",
@@ -22,8 +22,8 @@ describe("Users routes", () => {
   }).entity;
 
   beforeAll(async () => {
-    await repository.save(adminUser);
-    await repository.save(user);
+    await repositories.users.save(adminUser);
+    await repositories.users.save(user);
   });
 
   describe("GET to api/users/:id", () => {

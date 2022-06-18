@@ -1,18 +1,19 @@
 import { Router } from "express";
 import User from "../domain/entities/user";
 import { makeAuthenticationMiddleware } from "../input/middlewares/auth-middleware-factory";
+import IRepositoriesWrapper from "../output/repositories/repositories-wrapper-interface";
 import IEncryptor from "../security/encryptor-interface";
-import { makeControllers } from "../utils/controllers-factory";
+import { ControllersFactory } from "../utils/controllers-factory";
 
 export default function (
   router: Router,
-  repositories: any,
+  repositories: IRepositoriesWrapper,
   encryptor?: IEncryptor
 ) {
-  const controllersFactory = makeControllers<User.Entity>(
+  const controllers = new ControllersFactory<User.Entity>(
     repositories.users,
     encryptor
-  );
+  ).getControllers();
   const onlyAdmin = makeAuthenticationMiddleware(repositories.users, [
     User.Role.ADMIN,
   ]);
@@ -21,12 +22,8 @@ export default function (
     User.Role.USER,
   ]);
 
-  router.get(
-    "/users/:id",
-    allLoggedUsers,
-    controllersFactory.findByIdController
-  );
-  router.post("/users", allLoggedUsers, controllersFactory.registerController);
-  router.put("/users/:id", onlyAdmin, controllersFactory.updateController);
-  router.delete("/users/:id", onlyAdmin, controllersFactory.deleteController);
+  router.get("/users/:id", allLoggedUsers, controllers.findById.handle);
+  router.post("/users", allLoggedUsers, controllers.register.handle);
+  router.put("/users/:id", onlyAdmin, controllers.update.handle);
+  router.delete("/users/:id", onlyAdmin, controllers._delete.handle);
 }
