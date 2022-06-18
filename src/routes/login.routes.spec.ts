@@ -1,16 +1,16 @@
 import request from "supertest";
 import { configureExpress } from "../config/config-express-app";
-import { UsersRepositoryInMemory } from "../output/repositories/in-memory";
-import { createFakeUser } from "../utils/fake-entity-factory";
+import makeInMemoryRepositoryWrapper from "../output/repositories/in-memory/in-memory-repository-wrapper";
 import { makeBcryptEncryptor } from "../security/bcrypt";
+import { createFakeUser } from "../utils/fake-entity-factory";
 
 describe("Login Routes", () => {
-  const repository = new UsersRepositoryInMemory();
+  const repositories = makeInMemoryRepositoryWrapper();
   const encryptor = makeBcryptEncryptor("secret");
-  const app = configureExpress({ users: repository }, encryptor);
+  const app = configureExpress(repositories, encryptor);
 
   beforeAll(async () => {
-    await repository.save(
+    await repositories.users.save(
       createFakeUser(
         { username: "test", password: encryptor.encrypt("test") },
         "1"
