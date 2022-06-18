@@ -1,9 +1,14 @@
 import { Express, Router } from "express";
 import fs from "fs";
 import { catchError } from "../input/middlewares/catch-error";
+import IRepositoriesWrapper from "../output/repositories/repositories-wrapper-interface";
 import IEncryptor from "../security/encryptor-interface";
 
-export default (app: Express, repositories: any, encryptor: IEncryptor) => {
+export default (
+  app: Express,
+  repositories: IRepositoriesWrapper,
+  encryptor: IEncryptor
+) => {
   const router = Router();
   app.use("/api", router);
   fs.readdirSync(`${__dirname}/../routes`).map(async (fileName) => {
