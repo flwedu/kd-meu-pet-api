@@ -8,18 +8,23 @@ import IRepository from "../output/repositories/repository-interface";
 import IEncryptor from "../security/encryptor-interface";
 
 export class ControllersFactory<T> {
+  private findByIdController: FindByIdController<T>;
+  private registerController: RegisterController<T>;
+  private deleteController: DeleteController<T>;
+  private updateController: UpdateController<T>;
+
   constructor(
     private repository: IRepository<T>,
     private encryptor?: IEncryptor
-  ) {}
-
-  private findByIdController = new FindByIdController<T>(this.repository);
-  private registerController = new RegisterController<T>(
-    this.repository,
-    this.encryptor
-  );
-  private deleteController = new DeleteController<T>(this.repository);
-  private updateController = new UpdateController<T>(this.repository);
+  ) {
+    this.findByIdController = new FindByIdController<T>(this.repository);
+    this.registerController = new RegisterController<T>(
+      this.repository,
+      this.encryptor
+    );
+    this.deleteController = new DeleteController<T>(this.repository);
+    this.updateController = new UpdateController<T>(this.repository);
+  }
 
   public getControllers = () => {
     return {
