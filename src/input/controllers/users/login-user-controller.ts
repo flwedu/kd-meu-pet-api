@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import User from "../../../domain/entities/user";
-import { makeLoginUserUseCase } from "../../../domain/use-cases/user/login-user-use-case";
+import { LoginUserUseCase } from "../../../domain/use-cases/user/login-user-use-case";
 import IRepository from "../../../output/repositories/repository-interface";
 import IEncryptor from "../../../security/encryptor-interface";
 import { createSuccessResponse } from "../../response-factory/success-response-factory";
@@ -17,11 +17,11 @@ export class LoginUserController implements IController {
     try {
       const session = req.session as LoginSession;
       const { username, password } = req.body;
-      const loginUseCase = makeLoginUserUseCase(
+      const loginUseCase = new LoginUserUseCase(
         this.repository,
         this.encryptor
       );
-      const user = await loginUseCase({ username, password });
+      const user = await loginUseCase.execute({ username, password });
 
       if (user) {
         session.loggedId = user.id;
