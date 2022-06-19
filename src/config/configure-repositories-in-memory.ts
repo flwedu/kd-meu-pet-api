@@ -3,12 +3,13 @@ import {
   OccurrencesRepositoryInMemory,
   UsersRepositoryInMemory,
 } from "../output/repositories/in-memory";
-import IRepositoriesWrapper from "../output/repositories/repositories-wrapper-interface";
 
-export function getInMemoryRepositories(): IRepositoriesWrapper {
+const getInMemoryRepositories = () => {
   return {
     users: new UsersRepositoryInMemory(),
     animals: new AnimalsRepositoryInMemory(),
     occurrences: new OccurrencesRepositoryInMemory(),
   };
-}
+};
+
+export default getInMemoryRepositories;

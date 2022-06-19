@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import { configureExpress } from "./config/config-express-app";
-import { getInMemoryRepositories } from "./config/configure-repositories-in-memory";
+import getInMemoryRepositories from "./config/configure-repositories-in-memory";
 import { makeBcryptEncryptor } from "./security/bcrypt";
 
 const PORT = process.env.PORT || 3000;
