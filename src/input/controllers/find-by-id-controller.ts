@@ -7,12 +7,15 @@ import { IController } from "./controller-interface";
 export class FindByIdController<T> implements IController {
   constructor(private repository: IRepository<T>) {}
 
-  async handle(req: Request, res: Response, next: any) {
-    const id = req.params.id;
+  async handle(req: Partial<Request>, res: Response, next: any) {
+    const id = req.params?.id;
     const useCase = new FindByIdUseCase<T>(this.repository);
     try {
-      const result = await useCase.execute(id);
-      return createSuccessResponse(res).ok(result);
+      if (id) {
+        const result = await useCase.execute(id);
+        return createSuccessResponse(res).ok(result);
+      }
+      throw new Error("Id not provided");
     } catch (error) {
       next(error);
     }

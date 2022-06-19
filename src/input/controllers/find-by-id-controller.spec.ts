@@ -1,3 +1,4 @@
+import { Request } from "express";
 import NotFoundError from "../../domain/errors/not-found";
 import {
   AnimalsRepositoryInMemory,
@@ -5,6 +6,7 @@ import {
   UsersRepositoryInMemory,
 } from "../../output/repositories/in-memory/";
 import { ControllersFactory } from "../../utils/controllers-factory";
+import { makeBcryptEncryptor } from "../../security/bcrypt";
 import {
   createFakeAnimal,
   createFakeOccurrence,
@@ -12,6 +14,7 @@ import {
 } from "../../utils/fake-entity-factory";
 
 describe("# Find By Id Controller tests #", () => {
+  const encryptor = makeBcryptEncryptor("secret");
   describe.each`
     EntityName       | repositoryFactory                            | fakeEntityFactory
     ${"users"}       | ${() => new UsersRepositoryInMemory()}       | ${createFakeUser}
@@ -19,9 +22,9 @@ describe("# Find By Id Controller tests #", () => {
     ${"occurrences"} | ${() => new OccurrencesRepositoryInMemory()} | ${createFakeOccurrence}
   `("For $EntityName entities", ({ repositoryFactory, fakeEntityFactory }) => {
     let repository = repositoryFactory();
-    let factory = new ControllersFactory(repository);
+    let factory = new ControllersFactory(repository, encryptor);
     const controller = factory.getControllers().findById;
-    const res = {
+    const res: any = {
       status: jest.fn(() => res),
       json: jest.fn(() => res),
       send: jest.fn(() => res),
@@ -34,11 +37,10 @@ describe("# Find By Id Controller tests #", () => {
 
     test("For a valid user id, should call res.status() with 200 status code", async () => {
       await repository.save(fakeEntityFactory({}, "1").entity);
-      const req = {
-        params: { id: 1 },
+      const req: Partial<Request> = {
+        params: { id: "1" },
       };
 
-      //@ts-ignore
       await controller.handle(req, res, next);
 
       expect.assertions(2);
@@ -47,11 +49,10 @@ describe("# Find By Id Controller tests #", () => {
     });
 
     test("For a inexistent user id, should call next with 404 status code", async () => {
-      const req = {
-        params: { id: 2 },
+      const req: Partial<Request> = {
+        params: { id: "2" },
       };
 
-      //@ts-ignore
       await controller.handle(req, res, next);
 
       expect.assertions(1);

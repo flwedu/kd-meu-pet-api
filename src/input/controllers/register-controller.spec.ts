@@ -23,7 +23,7 @@ describe("# Register Controller test #", () => {
     const repository = repositoryFactory();
     const factory = new ControllersFactory(repository, encryptor);
     const controller = factory.getControllers().register;
-    const res = {
+    const res: any = {
       status: jest.fn(() => res),
       json: jest.fn(() => res),
       send: jest.fn(() => res),
@@ -40,7 +40,6 @@ describe("# Register Controller test #", () => {
         body,
       };
 
-      //@ts-ignore
       await controller.handle(req, res, next);
 
       expect.assertions(2);
@@ -54,7 +53,6 @@ describe("# Register Controller test #", () => {
         body: {},
       };
 
-      //@ts-ignore
       await controller.handle(req, res, next);
 
       expect.assertions(2);

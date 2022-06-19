@@ -12,7 +12,7 @@ export class RegisterController<T> implements IController {
     private readonly encryptor: IEncryptor
   ) {}
 
-  async handle(req: Request, res: Response, next: any) {
+  async handle(req: Partial<Request>, res: Response, next: any) {
     const entityName = req.path;
     const props = req.body;
 
