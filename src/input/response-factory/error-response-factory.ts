@@ -1,7 +1,7 @@
 import { Response } from "express";
 
 export function createErrorResponse(error: Error, res: Response) {
-  const errorDict = {
+  const errorDict: Record<string, Function> = {
     ValidationError: () =>
       res.status(400).json({
         type: error.name,
@@ -26,5 +26,5 @@ export function createErrorResponse(error: Error, res: Response) {
       }),
   };
 
-  return errorDict[error.name] ? errorDict[error.name]() : errorDict.default();
+  return errorDict[error.name] || errorDict.default;
 }
