@@ -1,7 +1,7 @@
 import { UsersRepositoryInMemory } from "../../../output/repositories/in-memory";
-import { makeLoginUserUseCase } from "./login-user-use-case";
-import { createFakeUser } from "../../../utils/fake-entity-factory";
 import { makeBcryptEncryptor } from "../../../security/bcrypt";
+import { createFakeUser } from "../../../utils/fake-entity-factory";
+import { LoginUserUseCase } from "./login-user-use-case";
 
 describe("Login User use case", () => {
   test("Should login a user", async () => {
@@ -14,8 +14,11 @@ describe("Login User use case", () => {
     const repository = new UsersRepositoryInMemory();
     await repository.save(user);
 
-    const sut = makeLoginUserUseCase(repository, encryptor);
-    const result = await sut({ username: "test", password: "password" });
+    const sut = new LoginUserUseCase(repository, encryptor);
+    const result = await sut.execute({
+      username: "test",
+      password: "password",
+    });
 
     expect.assertions(1);
     expect(result).toEqual(user);
@@ -31,9 +34,9 @@ describe("Login User use case", () => {
     const repository = new UsersRepositoryInMemory();
     await repository.save(user);
 
-    const sut = makeLoginUserUseCase(repository, encryptor);
+    const sut = new LoginUserUseCase(repository, encryptor);
     await expect(
-      sut({ username: "test", password: "wrong password" })
+      sut.execute({ username: "test", password: "wrong password" })
     ).rejects.toThrow("Invalid username or password");
   });
 });
