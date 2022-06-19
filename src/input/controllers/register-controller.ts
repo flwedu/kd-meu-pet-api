@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { makeRegisterUseCaseFn } from "../../domain/use-cases";
+import { RegisterUseCase } from "../../domain/use-cases";
 import IRepository from "../../output/repositories/repository-interface";
 import IEncryptor from "../../security/encryptor-interface";
 import { EntityName } from "../../utils/entity-builder";
@@ -8,15 +8,15 @@ import { IController } from "./controller-interface";
 
 export class RegisterController<T> implements IController {
   constructor(
-    private repository: IRepository<T>,
-    private encryptor: IEncryptor
+    private readonly repository: IRepository<T>,
+    private readonly encryptor: IEncryptor
   ) {}
 
   async handle(req: Request, res: Response, next: any) {
     const entityName = req.path;
     const props = req.body;
 
-    const registerUseCase = makeRegisterUseCaseFn<T>(
+    const useCase = new RegisterUseCase<T>(
       this.repository,
       entityName as EntityName,
       this.encryptor
@@ -24,7 +24,7 @@ export class RegisterController<T> implements IController {
 
     try {
       const id = props.id;
-      const createdId = await registerUseCase(props, id);
+      const createdId = await useCase.execute(props, id);
       return createSuccessResponse(res).created(createdId);
     } catch (error) {
       next(error);

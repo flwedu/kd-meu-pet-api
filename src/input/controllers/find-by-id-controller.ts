@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { makeFindByIdUseCase } from "../../domain/use-cases";
+import { FindByIdUseCase } from "../../domain/use-cases";
 import IRepository from "../../output/repositories/repository-interface";
 import { createSuccessResponse } from "../response-factory/success-response-factory";
 import { IController } from "./controller-interface";
@@ -9,9 +9,9 @@ export class FindByIdController<T> implements IController {
 
   async handle(req: Request, res: Response, next: any) {
     const id = req.params.id;
-    const findByIdUseCase = makeFindByIdUseCase<T>(this.repository);
+    const useCase = new FindByIdUseCase<T>(this.repository);
     try {
-      const result = await findByIdUseCase(id);
+      const result = await useCase.execute(id);
       return createSuccessResponse(res).ok(result);
     } catch (error) {
       next(error);
