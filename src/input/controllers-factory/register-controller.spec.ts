@@ -5,7 +5,7 @@ import {
   UsersRepositoryInMemory,
 } from "../../output/repositories/in-memory";
 import { makeBcryptEncryptor } from "../../security/bcrypt";
-import { ControllersFactory } from "../../utils/controllers-factory";
+import { ControllersFactory } from "./controllers-factory";
 import {
   createFakeAnimal,
   createFakeOccurrence,

@@ -5,13 +5,13 @@ import {
   OccurrencesRepositoryInMemory,
   UsersRepositoryInMemory,
 } from "../../output/repositories/in-memory/";
-import { ControllersFactory } from "../../utils/controllers-factory";
 import { makeBcryptEncryptor } from "../../security/bcrypt";
 import {
   createFakeAnimal,
   createFakeOccurrence,
   createFakeUser,
 } from "../../utils/fake-entity-factory";
+import { ControllersFactory } from "./controllers-factory";
 
 describe("# Find By Id Controller tests #", () => {
   const encryptor = makeBcryptEncryptor("secret");
