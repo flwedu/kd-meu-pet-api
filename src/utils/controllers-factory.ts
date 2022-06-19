@@ -13,17 +13,11 @@ export class ControllersFactory<T> {
   private deleteController: DeleteController<T>;
   private updateController: UpdateController<T>;
 
-  constructor(
-    private repository: IRepository<T>,
-    private encryptor?: IEncryptor
-  ) {
-    this.findByIdController = new FindByIdController<T>(this.repository);
-    this.registerController = new RegisterController<T>(
-      this.repository,
-      this.encryptor
-    );
-    this.deleteController = new DeleteController<T>(this.repository);
-    this.updateController = new UpdateController<T>(this.repository);
+  constructor(repository: IRepository<T>, encryptor: IEncryptor) {
+    this.findByIdController = new FindByIdController<T>(repository);
+    this.registerController = new RegisterController<T>(repository, encryptor);
+    this.deleteController = new DeleteController<T>(repository);
+    this.updateController = new UpdateController<T>(repository);
   }
 
   public getControllers = () => {
