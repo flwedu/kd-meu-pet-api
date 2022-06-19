@@ -4,7 +4,7 @@ import { catchError } from "../input/middlewares/catch-error";
 import IRepositoriesWrapper from "../output/repositories/repositories-wrapper-interface";
 import IEncryptor from "../security/encryptor-interface";
 
-export default (
+const configureRoutes = (
   app: Express,
   repositories: IRepositoriesWrapper,
   encryptor: IEncryptor
@@ -21,3 +21,5 @@ export default (
   //Error handling
   router.use(catchError);
 };
+
+export { configureRoutes };
