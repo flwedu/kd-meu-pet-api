@@ -1,11 +1,6 @@
-import makeRegisterUseCaseFn from "./register-use-case";
-import makeFindByIdUseCase from "./find-by-id-use-case";
-import makeUpdateUseCaseFn from "./update-use-case";
-import makeDeleteUseCase from "./delete-use-case";
+import RegisterUseCase from "./register-use-case";
+import FindByIdUseCase from "./find-by-id-use-case";
+import UpdateUseCase from "./update-use-case";
+import DeleteUseCase from "./delete-use-case";
 
-export {
-  makeRegisterUseCaseFn,
-  makeFindByIdUseCase,
-  makeUpdateUseCaseFn,
-  makeDeleteUseCase,
-};
+export { RegisterUseCase, FindByIdUseCase, UpdateUseCase, DeleteUseCase };

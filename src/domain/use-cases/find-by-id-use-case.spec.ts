@@ -2,7 +2,7 @@ import { UsersRepositoryInMemory } from "../../output/repositories/in-memory";
 import { createFakeUser } from "../../utils/fake-entity-factory";
 import User from "../entities/user";
 import NotFoundError from "../errors/not-found";
-import { makeFindByIdUseCase } from "./";
+import { FindByIdUseCase } from "./";
 
 describe("tests for use case - Find By Id", () => {
   describe.each`
@@ -17,11 +17,11 @@ describe("tests for use case - Find By Id", () => {
 
       test("given a Id, should find instance of $entityName", async () => {
         const repository = createRepository();
-        const sut = makeFindByIdUseCase<typeof Entity>(repository);
+        const sut = new FindByIdUseCase<typeof Entity>(repository);
         const spy = jest.spyOn(repository, "findById");
 
         const savedId = await repository.save(fakeEntity);
-        const result = await sut(savedId);
+        const result = await sut.execute(savedId);
 
         expect.assertions(2);
         expect(result).toBeTruthy();
@@ -30,12 +30,12 @@ describe("tests for use case - Find By Id", () => {
 
       test("given a invalid Id, should throw an error", async () => {
         const repository = createRepository();
-        const sut = makeFindByIdUseCase<typeof Entity>(repository);
+        const sut = new FindByIdUseCase<typeof Entity>(repository);
         const spy = jest.spyOn(repository, "findById");
 
         expect.assertions(2);
         try {
-          await sut("1");
+          await sut.execute("1");
         } catch (error) {
           expect(error).toBeInstanceOf(NotFoundError);
           expect(spy).toHaveBeenCalledTimes(1);
