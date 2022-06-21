@@ -1,4 +1,5 @@
 import { Server } from "@overnightjs/core";
+import chalk from "chalk";
 import { AnimalsControllers } from "../input/controllers-routes/animals.routes";
 import { LoginController } from "../input/controllers-routes/login.routes";
 import { LogoutController } from "../input/controllers-routes/logout.routes";
@@ -37,7 +38,10 @@ export class ExpressServer extends Server {
 
   public start(port: number): void {
     this.app.listen(port, () => {
-      console.log(`Server listening on port ${port}`);
+      const host = "http://localhost";
+      console.log(
+        `Server is running at ${chalk.blue(host)}:${chalk.green(port)} 🚀`
+      );
     });
   }
 
