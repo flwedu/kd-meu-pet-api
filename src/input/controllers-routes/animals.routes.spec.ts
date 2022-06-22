@@ -1,22 +1,23 @@
 import supertest from "supertest";
-import { configureExpress } from "../config/config-express-app";
-import { AnimalsRepositoryInMemory } from "../output/repositories/in-memory";
-import { makeBcryptEncryptor } from "../security/bcrypt";
-import { createFakeAnimal } from "../utils/fake-entity-factory";
+import getInMemoryRepositories from "../../config/configure-repositories-in-memory";
+import { makeBcryptEncryptor } from "../../security/bcrypt";
+import { ExpressServer } from "../../config/express-server";
+import { createFakeAnimal } from "../../utils/fake-entity-factory";
 
 describe("# Animals routes #", () => {
-  const repository = new AnimalsRepositoryInMemory();
+  const repositories = getInMemoryRepositories();
   const encryptor = makeBcryptEncryptor("secret");
-  const app = configureExpress({ animals: repository }, encryptor);
-
-  beforeAll(async () => {
-    await repository.save(createFakeAnimal({}, "1").entity);
-  });
+  const app = new ExpressServer(repositories, encryptor).getApp();
 
   describe("# GET", () => {
     describe("api/animals/:id", () => {
       test("with a valid id, should return 200 OK", async () => {
-        await supertest(app).get("/api/animals/1").expect(200);
+        const entity = createFakeAnimal({}, "1");
+        console.log(entity.entity.id);
+        await repositories.animals.save(entity.entity);
+        await supertest(app)
+          .get(`/api/animals/${entity.entity.id}`)
+          .expect(200);
       });
 
       test("with a inexistent id, should return 404", async () => {

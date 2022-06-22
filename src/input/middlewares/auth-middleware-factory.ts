@@ -12,7 +12,7 @@ export function makeAuthenticationMiddleware(
   }
 
   return async (
-    req: Request & { session: { loggedId: undefined | string } },
+    req: Request & { session: any },
     res: Response,
     next: NextFunction
   ) => {

@@ -6,6 +6,9 @@
     "module": "CommonJS",
     "target": "es2019",
     "esModuleInterop": true,
+    "strictNullChecks": true,
+    "strict": true,
+    "noImplicitAny": true,
     "noEmit": false,
     "moduleResolution": "Node",
     "experimentalDecorators": true

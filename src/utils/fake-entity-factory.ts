@@ -39,7 +39,7 @@ export function createFakeAnimal(props: any, id?: string) {
   };
 }
 
-export function createFakeOccurrence(props: any) {
+export function createFakeOccurrence(props: any, id?: string) {
   const finalProps = Object.assign(
     {
       type: Occurrence.Type.SIGHTING,
@@ -51,6 +51,6 @@ export function createFakeOccurrence(props: any) {
 
   return {
     props: finalProps,
-    entity: new Occurrence.Entity(finalProps),
+    entity: new Occurrence.Entity(finalProps, id),
   };
 }

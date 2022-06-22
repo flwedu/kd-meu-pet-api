@@ -1,7 +1,8 @@
 import IRepository from "../../output/repositories/repository-interface";
 
-export default function makeDeleteUseCase<T>(repository: IRepository<T>) {
-  return (id: string) => {
-    return repository.delete(id);
-  };
+export default class DeleteUseCase<T> {
+  constructor(private repository: IRepository<T>) {}
+  execute(id: string) {
+    return this.repository.delete(id);
+  }
 }

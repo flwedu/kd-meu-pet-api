@@ -4,10 +4,12 @@ import {
   UsersRepositoryInMemory,
 } from "../output/repositories/in-memory";
 
-export function getInMemoryRepositories() {
+const getInMemoryRepositories = () => {
   return {
     users: new UsersRepositoryInMemory(),
     animals: new AnimalsRepositoryInMemory(),
     occurrences: new OccurrencesRepositoryInMemory(),
   };
-}
+};
+
+export default getInMemoryRepositories;
