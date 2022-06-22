@@ -1,4 +1,11 @@
-import { Controller, Get, Post, Put, Delete } from "@overnightjs/core";
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  ClassErrorMiddleware,
+} from "@overnightjs/core";
 import { NextFunction, Request, Response } from "express";
 import User from "../../domain/entities/user";
 import IRepositoriesWrapper from "../../output/repositories/repositories-wrapper-interface";
@@ -9,7 +16,9 @@ import {
   RegisterController,
   UpdateController,
 } from "../controllers-factory";
+import { catchError } from "../middlewares/catch-error";
 
+@ClassErrorMiddleware(catchError)
 @Controller("api/users")
 export class UsersControllers {
   constructor(

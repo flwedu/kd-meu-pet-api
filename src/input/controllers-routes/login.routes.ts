@@ -1,12 +1,14 @@
-import { Controller, Get, Post } from "@overnightjs/core";
+import { ClassErrorMiddleware, Controller, Get, Post } from "@overnightjs/core";
 import { NextFunction, Request, Response } from "express";
 import { LoginUserUseCase } from "../../domain/use-cases/user/login-user-use-case";
 import IRepositoriesWrapper from "../../output/repositories/repositories-wrapper-interface";
 import IEncryptor from "../../security/encryptor-interface";
 import { LoginSession } from "./session";
 import { createSuccessResponse } from "../response-factory/success-response-factory";
+import { catchError } from "../middlewares/catch-error";
 
 @Controller("api/login")
+@ClassErrorMiddleware(catchError)
 export class LoginController {
   constructor(
     private readonly repositories: IRepositoriesWrapper,

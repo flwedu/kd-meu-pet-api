@@ -1,9 +1,11 @@
-import { Controller, Get, Post } from "@overnightjs/core";
+import { ClassErrorMiddleware, Controller, Get, Post } from "@overnightjs/core";
 import { NextFunction, Request, Response } from "express";
 import { LoginSession } from "./session";
 import { createSuccessResponse } from "../response-factory/success-response-factory";
+import { catchError } from "../middlewares/catch-error";
 
 @Controller("api/logout")
+@ClassErrorMiddleware(catchError)
 export class LogoutController {
   @Get()
   @Post()

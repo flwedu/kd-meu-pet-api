@@ -1,4 +1,11 @@
-import { Controller, Get, Post, Put, Delete } from "@overnightjs/core";
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  ClassErrorMiddleware,
+} from "@overnightjs/core";
 import { NextFunction, Request, Response } from "express";
 import Occurrence from "../../domain/entities/occurrence";
 import IRepositoriesWrapper from "../../output/repositories/repositories-wrapper-interface";
@@ -9,8 +16,10 @@ import {
   RegisterController,
   UpdateController,
 } from "../controllers-factory";
+import { catchError } from "../middlewares/catch-error";
 
 @Controller("api/occurrences")
+@ClassErrorMiddleware(catchError)
 export class OccurrencesControllers {
   constructor(
     private repositories: IRepositoriesWrapper,
