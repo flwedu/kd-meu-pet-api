@@ -6,7 +6,7 @@ import IEncryptor from "../../security/encryptor-interface";
 import { LoginSession } from "./session";
 import { createSuccessResponse } from "../response-factory/success-response-factory";
 
-@Controller("/api/login")
+@Controller("api/login")
 export class LoginController {
   constructor(
     private readonly repositories: IRepositoriesWrapper,

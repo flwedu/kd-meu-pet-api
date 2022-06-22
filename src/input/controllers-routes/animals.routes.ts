@@ -10,14 +10,14 @@ import {
   UpdateController,
 } from "../controllers-factory";
 
-@Controller("/api/animals")
+@Controller("api/animals")
 export class AnimalsControllers {
   constructor(
     private repositories: IRepositoriesWrapper,
     private encryptor: IEncryptor
   ) {}
 
-  @Get("/:id")
+  @Get(":id")
   get(req: Request, res: Response, next: NextFunction) {
     const controller = new FindByIdController<Animal.Entity>(
       this.repositories.animals
@@ -34,7 +34,7 @@ export class AnimalsControllers {
     return controller.handle(req, res, next);
   }
 
-  @Put("/:id")
+  @Put(":id")
   put(req: Request, res: Response, next: NextFunction) {
     const controller = new UpdateController<Animal.Entity>(
       this.repositories.animals
@@ -42,7 +42,7 @@ export class AnimalsControllers {
     return controller.handle(req, res, next);
   }
 
-  @Delete("/:id")
+  @Delete(":id")
   delete(req: Request, res: Response, next: NextFunction) {
     const controller = new DeleteController<Animal.Entity>(
       this.repositories.animals

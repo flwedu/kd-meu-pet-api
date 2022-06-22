@@ -10,14 +10,14 @@ import {
   UpdateController,
 } from "../controllers-factory";
 
-@Controller("/api/users")
+@Controller("api/users")
 export class UsersControllers {
   constructor(
     private repositories: IRepositoriesWrapper,
     private encryptor: IEncryptor
   ) {}
 
-  @Get("/:id")
+  @Get(":id")
   get(req: Request, res: Response, next: NextFunction) {
     const controller = new FindByIdController<User.Entity>(
       this.repositories.users
@@ -34,7 +34,7 @@ export class UsersControllers {
     return controller.handle(req, res, next);
   }
 
-  @Put("/:id")
+  @Put(":id")
   put(req: Request, res: Response, next: NextFunction) {
     const controller = new UpdateController<User.Entity>(
       this.repositories.users
@@ -42,7 +42,7 @@ export class UsersControllers {
     return controller.handle(req, res, next);
   }
 
-  @Delete("/:id")
+  @Delete(":id")
   delete(req: Request, res: Response, next: NextFunction) {
     const controller = new DeleteController<User.Entity>(
       this.repositories.users

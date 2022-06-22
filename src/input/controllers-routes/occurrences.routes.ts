@@ -10,14 +10,14 @@ import {
   UpdateController,
 } from "../controllers-factory";
 
-@Controller("/api/occurrences")
+@Controller("api/occurrences")
 export class OccurrencesControllers {
   constructor(
     private repositories: IRepositoriesWrapper,
     private encryptor: IEncryptor
   ) {}
 
-  @Get("/:id")
+  @Get(":id")
   get(req: Request, res: Response, next: NextFunction) {
     const controller = new FindByIdController<Occurrence.Entity>(
       this.repositories.occurrences
@@ -34,7 +34,7 @@ export class OccurrencesControllers {
     return controller.handle(req, res, next);
   }
 
-  @Put("/:id")
+  @Put(":id")
   put(req: Request, res: Response, next: NextFunction) {
     const controller = new UpdateController<Occurrence.Entity>(
       this.repositories.occurrences
@@ -42,7 +42,7 @@ export class OccurrencesControllers {
     return controller.handle(req, res, next);
   }
 
-  @Delete("/:id")
+  @Delete(":id")
   delete(req: Request, res: Response, next: NextFunction) {
     const controller = new DeleteController<Occurrence.Entity>(
       this.repositories.occurrences

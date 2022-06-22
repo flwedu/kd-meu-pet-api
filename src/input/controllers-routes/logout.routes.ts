@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { LoginSession } from "./session";
 import { createSuccessResponse } from "../response-factory/success-response-factory";
 
-@Controller("/api/logout")
+@Controller("api/logout")
 export class LogoutController {
   @Get()
   @Post()
