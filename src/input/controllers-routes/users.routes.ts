@@ -1,10 +1,10 @@
 import {
+  ClassErrorMiddleware,
   Controller,
+  Delete,
   Get,
   Post,
   Put,
-  Delete,
-  ClassErrorMiddleware,
 } from "@overnightjs/core";
 import { NextFunction, Request, Response } from "express";
 import User from "../../domain/entities/user";
