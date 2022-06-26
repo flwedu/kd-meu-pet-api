@@ -52,7 +52,7 @@ export class UsersControllers {
   }
 
   @Delete(":id")
-  delete(req: Request, res: Response, next: NextFunction) {
+  _delete(req: Request, res: Response, next: NextFunction) {
     const controller = new DeleteController<User.Entity>(
       this.repositories.users
     );

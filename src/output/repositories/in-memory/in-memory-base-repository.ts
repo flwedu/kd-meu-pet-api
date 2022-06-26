@@ -53,7 +53,7 @@ export default class InMemoryBaseRepository<
     }
     throw new NotFoundError();
   }
-  delete(id: string): Promise<boolean> {
+  _delete(id: string): Promise<boolean> {
     const notSameId = (el: T) => el.id !== id;
     const oldLength = this.list.length;
     this.list.filter(notSameId);

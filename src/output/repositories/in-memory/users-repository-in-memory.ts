@@ -24,7 +24,7 @@ export default class UsersRepositoryInMemory
   update(entity: User.Entity, id: string): Promise<string> {
     return this.base.update(entity, id);
   }
-  delete(id: string): Promise<boolean> {
-    return this.base.delete(id);
+  _delete(id: string): Promise<boolean> {
+    return this.base._delete(id);
   }
 }

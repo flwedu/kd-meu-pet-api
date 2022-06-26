@@ -4,5 +4,5 @@ export default interface IRepository<T> {
   findById(id: string): Promise<T>;
   findOne(query: object): Promise<T>;
   update(entity: T, id: string): Promise<string>;
-  delete(id: string): Promise<boolean>;
+  _delete(id: string): Promise<boolean>;
 }

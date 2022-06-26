@@ -52,7 +52,7 @@ export class OccurrencesControllers {
   }
 
   @Delete(":id")
-  delete(req: Request, res: Response, next: NextFunction) {
+  _delete(req: Request, res: Response, next: NextFunction) {
     const controller = new DeleteController<Occurrence.Entity>(
       this.repositories.occurrences
     );

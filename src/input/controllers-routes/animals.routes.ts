@@ -52,7 +52,7 @@ export class AnimalsControllers {
   }
 
   @Delete(":id")
-  delete(req: Request, res: Response, next: NextFunction) {
+  _delete(req: Request, res: Response, next: NextFunction) {
     const controller = new DeleteController<Animal.Entity>(
       this.repositories.animals
     );
