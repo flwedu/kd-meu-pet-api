@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import ValidationError from "../../domain/errors/validation-error";
 import { FindByIdUseCase } from "../../domain/use-cases";
 import IRepository from "../../output/repositories/repository-interface";
 import { createSuccessResponse } from "../response-factory/success-response-factory";
@@ -11,11 +12,10 @@ export class FindByIdController<T> implements IController {
     const id = req.params?.id;
     const useCase = new FindByIdUseCase<T>(this.repository);
     try {
-      if (id) {
-        const result = await useCase.execute(id);
-        return createSuccessResponse(res).ok(result);
-      }
-      throw new Error("Id not provided");
+      if (!id) throw new ValidationError("Id", "Not provided");
+
+      const result = await useCase.execute(id);
+      return createSuccessResponse(res).ok(result);
     } catch (error) {
       next(error);
     }
