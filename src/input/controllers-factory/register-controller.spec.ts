@@ -15,10 +15,10 @@ import {
 describe("# Register Controller test #", () => {
   const encryptor = makeBcryptEncryptor("secret");
   describe.each`
-    repositoryFactory                            | path             | body
-    ${() => new UsersRepositoryInMemory()}       | ${"users"}       | ${createFakeUser({}).props}
-    ${() => new AnimalsRepositoryInMemory()}     | ${"animals"}     | ${createFakeAnimal({}).props}
-    ${() => new OccurrencesRepositoryInMemory()} | ${"occurrences"} | ${createFakeOccurrence({}).props}
+    repositoryFactory                            | path                 | body
+    ${() => new UsersRepositoryInMemory()}       | ${"api/users"}       | ${createFakeUser({}).props}
+    ${() => new AnimalsRepositoryInMemory()}     | ${"api/animals"}     | ${createFakeAnimal({}).props}
+    ${() => new OccurrencesRepositoryInMemory()} | ${"api/occurrences"} | ${createFakeOccurrence({}).props}
   `("For $path entities", ({ repositoryFactory, path, body }) => {
     const repository = repositoryFactory();
     const factory = new ControllersFactory(repository, encryptor);
