@@ -3,7 +3,7 @@ import Animal from "../domain/entities/animal";
 import Occurrence from "../domain/entities/occurrence";
 import User from "../domain/entities/user";
 
-export function createFakeUser(props: any, id?: string) {
+export function createFakeUser(props: Partial<User.Props>, id?: string) {
   const finalProps = Object.assign(
     {
       username: faker.internet.userName(),
@@ -11,6 +11,7 @@ export function createFakeUser(props: any, id?: string) {
       email: faker.internet.email(),
       fullName: `${faker.name.firstName()} ${faker.name.lastName()}`,
       profilePic: faker.internet.avatar(),
+      role: User.Role.USER,
     },
     props
   );
@@ -20,7 +21,7 @@ export function createFakeUser(props: any, id?: string) {
   };
 }
 
-export function createFakeAnimal(props: any, id?: string) {
+export function createFakeAnimal(props: Partial<Animal.Props>, id?: string) {
   const finalProps = Object.assign(
     {
       name: faker.animal.cat(),
@@ -39,7 +40,10 @@ export function createFakeAnimal(props: any, id?: string) {
   };
 }
 
-export function createFakeOccurrence(props: any, id?: string) {
+export function createFakeOccurrence(
+  props: Partial<Occurrence.Props>,
+  id?: string
+) {
   const finalProps = Object.assign(
     {
       type: Occurrence.Type.SIGHTING,
