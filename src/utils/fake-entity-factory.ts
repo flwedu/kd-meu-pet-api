@@ -4,7 +4,7 @@ import Occurrence from "../domain/entities/occurrence";
 import User from "../domain/entities/user";
 
 export function createFakeUser(props: Partial<User.Props>, id?: string) {
-  const finalProps = Object.assign(
+  const finalProps: User.Props = Object.assign(
     {
       username: faker.internet.userName(),
       password: faker.internet.password(5),
@@ -22,7 +22,7 @@ export function createFakeUser(props: Partial<User.Props>, id?: string) {
 }
 
 export function createFakeAnimal(props: Partial<Animal.Props>, id?: string) {
-  const finalProps = Object.assign(
+  const finalProps: Animal.Props = Object.assign(
     {
       name: faker.animal.cat(),
       colors: ["black", "white"],
@@ -44,7 +44,7 @@ export function createFakeOccurrence(
   props: Partial<Occurrence.Props>,
   id?: string
 ) {
-  const finalProps = Object.assign(
+  const finalProps: Occurrence.Props = Object.assign(
     {
       type: Occurrence.Type.SIGHTING,
       geoLocation: faker.address.nearbyGPSCoordinate().join(),
