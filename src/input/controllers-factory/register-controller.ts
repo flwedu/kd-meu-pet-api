@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
-import { OperationError } from "../../domain/errors/operation-error";
 import { RegisterUseCase } from "../../domain/use-cases";
 import IRepository from "../../output/repositories/repository-interface";
 import IEncryptor from "../../security/encryptor-interface";
-import { EntityName } from "../../utils/entity-builder";
+import { getNameFromPathOrBaseUrl } from "../../utils/get-name-from-path-or-baseurl";
 import { createSuccessResponse } from "../response-factory/success-response-factory";
 import { IController } from "./controller-interface";
 
@@ -14,13 +13,12 @@ export class RegisterController<T> implements IController {
   ) {}
 
   async handle(req: Partial<Request>, res: Response, next: any) {
-    const path = req.path!.length > 1 ? req.path : req.baseUrl;
-    const entityName = extractEntityNameFromPath(path!);
+    const entityName = getNameFromPathOrBaseUrl(req);
     const props = req.body;
 
     const useCase = new RegisterUseCase<T>(
       this.repository,
-      entityName as EntityName,
+      entityName,
       this.encryptor
     );
 
@@ -32,15 +30,4 @@ export class RegisterController<T> implements IController {
       next(error);
     }
   }
-}
-
-function extractEntityNameFromPath(path: string) {
-  const findPathRegex = /api\/(\w+)\/?/gi;
-  const matchResults = findPathRegex.exec(path);
-  if (!matchResults) {
-    throw new OperationError(
-      `Could not extract entity name from path: ${path}`
-    );
-  }
-  return matchResults[1];
 }
