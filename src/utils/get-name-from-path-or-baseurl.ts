@@ -16,6 +16,13 @@ export function getNameFromPathOrBaseUrl(
     return matchResults[1] as EntityName;
   }
 
-  const url = request.path!.length > 1 ? request.path : request.baseUrl;
+  const url = checkValidUrlPath(request.path) ? request.path : request.baseUrl;
   return findNameInUrl(url!);
+}
+
+function checkValidUrlPath(url?: string): boolean {
+  if (url === undefined || url === null || url === "") return false;
+
+  const findPathRegex = /api\/(\w+)\/?/gi;
+  return findPathRegex.test(url);
 }
