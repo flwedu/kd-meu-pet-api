@@ -7,8 +7,9 @@ export const catchError = (
   res: Response,
   next: NextFunction
 ) => {
+  const devMode = process.env.NODE_ENV === "development";
   if (error) {
-    const errorResponse = createErrorResponse(error, res);
+    const errorResponse = createErrorResponse(error, res, devMode);
     return errorResponse();
   }
 
