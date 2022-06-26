@@ -19,8 +19,8 @@ export class UpdateController<T> implements IController {
     try {
       if (!id) throw new ValidationError("Id", "Not provided");
 
-      await useCase.execute(props, id);
-      return createSuccessResponse(res);
+      const response = await useCase.execute(props, id);
+      return createSuccessResponse(res).ok(response);
     } catch (error) {
       next(error);
     }
