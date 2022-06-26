@@ -13,9 +13,9 @@ export class RegisterController<T> implements IController {
     private readonly encryptor: IEncryptor
   ) {}
 
-  async handle(req: Request, res: Response, next: any) {
-    const path = req.path.length > 1 ? req.path : req.baseUrl;
-    const entityName = extractEntityNameFromPath(path);
+  async handle(req: Partial<Request>, res: Response, next: any) {
+    const path = req.path!.length > 1 ? req.path : req.baseUrl;
+    const entityName = extractEntityNameFromPath(path!);
     const props = req.body;
 
     const useCase = new RegisterUseCase<T>(
