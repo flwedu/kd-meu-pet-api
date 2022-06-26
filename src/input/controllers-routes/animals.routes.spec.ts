@@ -54,4 +54,52 @@ describe("# Animals routes #", () => {
       }
     );
   });
+
+  describe("PUT to /api/animals/:id", () => {
+    const animal = createFakeAnimal({}, "1");
+    const newAnimal = createFakeAnimal({});
+
+    test("with valid body data, should return 200", async () => {
+      await repositories.animals.save(animal.entity);
+
+      const response = await supertest(app)
+        .put(`/api/animals/${animal.entity.id}`)
+        .send(newAnimal.props);
+
+      expect.assertions(1);
+      expect(response.statusCode).toEqual(200);
+    }, 10000);
+
+    test("with a inexistent id, should return 404", async () => {
+      await repositories.animals.save(animal.entity);
+      const response = await supertest(app)
+        .put("/api/animals/2")
+        .send(newAnimal.props);
+
+      expect.assertions(1);
+      expect(response.statusCode).toEqual(404);
+    });
+  });
+
+  describe("DELETE to /api/animals/:id", () => {
+    const animal = createFakeAnimal({}, "1");
+
+    test("with a valid id, should return 200", async () => {
+      await repositories.animals.save(animal.entity);
+
+      const response = await supertest(app).delete(
+        `/api/animals/${animal.entity.id}`
+      );
+
+      expect.assertions(1);
+      expect(response.statusCode).toEqual(200);
+    });
+
+    test("with a inexistent id, should return 404", async () => {
+      const response = await supertest(app).delete("/api/animals/2");
+
+      expect.assertions(1);
+      expect(response.statusCode).toEqual(404);
+    });
+  });
 });

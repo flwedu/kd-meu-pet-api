@@ -75,4 +75,52 @@ describe("## Users routes ##", () => {
       expect(response.statusCode).toEqual(201);
     });
   });
+
+  describe("PUT to api/users/:id", () => {
+    test("Should return 200 with a valid body", async () => {
+      const user = createFakeUser({});
+
+      await repositories.users.save(user.entity);
+
+      const response = await supertest(app)
+        .put(`/api/users/${user.entity.id}`)
+        .send(user.props);
+
+      expect.assertions(1);
+      expect(response.statusCode).toEqual(200);
+    }, 5000);
+
+    test("Should return 404 with an invalid id", async () => {
+      const newUser = createFakeUser({});
+
+      const response = await supertest(app)
+        .put("/api/users/invalid-id")
+        .send(newUser.props);
+
+      expect.assertions(1);
+      expect(response.statusCode).toEqual(404);
+    });
+  });
+
+  describe("DELETE to api/users/:id", () => {
+    test("Should return 200", async () => {
+      const user = createFakeUser({});
+
+      await repositories.users.save(user.entity);
+
+      const response = await supertest(app).delete(
+        `/api/users/${user.entity.id}`
+      );
+
+      expect.assertions(1);
+      expect(response.statusCode).toEqual(200);
+    });
+
+    test("Should return 404 with an invalid id", async () => {
+      const response = await supertest(app).delete("/api/users/invalid-id");
+
+      expect.assertions(1);
+      expect(response.statusCode).toEqual(404);
+    });
+  });
 });

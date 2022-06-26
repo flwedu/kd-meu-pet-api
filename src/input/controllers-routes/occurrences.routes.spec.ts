@@ -9,7 +9,7 @@ describe("## Occurrences routes ##", () => {
   const encryptor = makeBcryptEncryptor("secret");
   const app = new ExpressServer(repositories, encryptor).getApp();
 
-  describe("When #GET to api/occurrences/:id", () => {
+  describe("GET to api/occurrences/:id", () => {
     test("for a valid id, should return 200 OK", async () => {
       const occurrence = createFakeOccurrence({}).entity;
       await repositories.occurrences.save(occurrence);
@@ -29,14 +29,14 @@ describe("## Occurrences routes ##", () => {
     });
   });
 
-  test("When #GET to /api/occurrences, should return 404", async () => {
+  test("GET to /api/occurrences, should return 404", async () => {
     const response = await supertest(app).get("/api/occurrences/2");
 
     expect.assertions(1);
     expect(response.status).toBe(404);
   });
 
-  describe("When #POST to /api/occurrences", () => {
+  describe("POST to /api/occurrences", () => {
     test("Should return 201 with valid body data", async () => {
       const occurrence = createFakeOccurrence({});
 
@@ -46,6 +46,51 @@ describe("## Occurrences routes ##", () => {
 
       expect.assertions(1);
       expect(response.status).toBe(201);
+    });
+  });
+
+  describe("PUT to /api/occurrences/:id", () => {
+    test("Should return 200 with valid body data", async () => {
+      const occurrence = createFakeOccurrence({});
+      await repositories.occurrences.save(occurrence.entity);
+
+      const response = await supertest(app)
+        .put(`/api/occurrences/${occurrence.entity.id}`)
+        .send(occurrence.props);
+
+      expect.assertions(1);
+      expect(response.status).toBe(200);
+    });
+
+    test("Should return 404 with invalid id", async () => {
+      const newOccurrence = createFakeOccurrence({});
+      const response = await supertest(app)
+        .put("/api/occurrences/2")
+        .send(newOccurrence.props);
+
+      expect.assertions(1);
+      expect(response.status).toBe(404);
+    });
+  });
+
+  describe("DELETE to /api/occurrences/:id", () => {
+    test("Should return 200 with valid body data", async () => {
+      const occurrence = createFakeOccurrence({});
+      await repositories.occurrences.save(occurrence.entity);
+
+      const response = await supertest(app).delete(
+        `/api/occurrences/${occurrence.entity.id}`
+      );
+
+      expect.assertions(1);
+      expect(response.status).toBe(200);
+    });
+
+    test("Should return 404 with invalid id", async () => {
+      const response = await supertest(app).delete("/api/occurrences/2");
+
+      expect.assertions(1);
+      expect(response.status).toBe(404);
     });
   });
 });
