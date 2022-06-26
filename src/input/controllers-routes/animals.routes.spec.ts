@@ -9,11 +9,10 @@ describe("# Animals routes #", () => {
   const encryptor = makeBcryptEncryptor("secret");
   const app = new ExpressServer(repositories, encryptor).getApp();
 
-  describe("# GET", () => {
+  describe("GET", () => {
     describe("api/animals/:id", () => {
       test("with a valid id, should return 200 OK", async () => {
         const entity = createFakeAnimal({}, "1");
-        console.log(entity.entity.id);
         await repositories.animals.save(entity.entity);
         await supertest(app)
           .get(`/api/animals/${entity.entity.id}`)
@@ -29,30 +28,24 @@ describe("# Animals routes #", () => {
     });
   });
 
-  describe("#POST to /api/animals", () => {
+  describe("POST to /api/animals", () => {
     const animal = createFakeAnimal({});
     test("with valid body data, should return 201", async () => {
-      const data = {
-        id: animal.entity.id,
-        ...animal.props,
-      };
+      const response = await supertest(app)
+        .post("/api/animals")
+        .send(animal.props);
 
-      const response = await supertest(app).post("/api/animals").send(data);
-
-      expect.assertions(2);
+      expect.assertions(1);
       expect(response.statusCode).toEqual(201);
-      expect(response.body).toEqual({
-        message: `created successfully with id ${animal.entity.id}`,
-      });
     });
 
     test.each([{ name: null }, { description: null }])(
       "with missing props, should return 400",
       async (props) => {
-        const data = {
+        const data = JSON.stringify({
           ...animal.props,
           ...props,
-        };
+        });
 
         const response = await supertest(app).post("/api/animals").send(data);
 

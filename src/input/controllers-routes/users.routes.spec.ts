@@ -5,7 +5,7 @@ import User from "../../domain/entities/user";
 import { makeBcryptEncryptor } from "../../security/bcrypt";
 import { createFakeUser } from "../../utils/fake-entity-factory";
 
-describe("Users routes", () => {
+describe("## Users routes ##", () => {
   const repositories = getInMemoryRepositories();
   const encryptor = makeBcryptEncryptor("secret");
   const app = new ExpressServer(repositories, encryptor).getApp();
@@ -62,6 +62,17 @@ describe("Users routes", () => {
           expect(response.status).toBe(expectedStatus);
         }
       );
+    });
+  });
+
+  describe("POST to api/users", () => {
+    test("Should return 201 with a valid body", async () => {
+      const user = createFakeUser({});
+
+      const response = await supertest(app).post("/api/users").send(user.props);
+
+      expect.assertions(1);
+      expect(response.statusCode).toEqual(201);
     });
   });
 });

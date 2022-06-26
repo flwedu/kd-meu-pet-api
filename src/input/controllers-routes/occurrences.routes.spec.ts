@@ -4,7 +4,7 @@ import { ExpressServer } from "../../config/express-server";
 import { makeBcryptEncryptor } from "../../security/bcrypt";
 import { createFakeOccurrence } from "../../utils/fake-entity-factory";
 
-describe("## load occurrences routes ##", () => {
+describe("## Occurrences routes ##", () => {
   const repositories = getInMemoryRepositories();
   const encryptor = makeBcryptEncryptor("secret");
   const app = new ExpressServer(repositories, encryptor).getApp();
@@ -34,5 +34,18 @@ describe("## load occurrences routes ##", () => {
 
     expect.assertions(1);
     expect(response.status).toBe(404);
+  });
+
+  describe("When #POST to /api/occurrences", () => {
+    test("Should return 201 with valid body data", async () => {
+      const occurrence = createFakeOccurrence({});
+
+      const response = await supertest(app)
+        .post("/api/occurrences")
+        .send(occurrence.props);
+
+      expect.assertions(1);
+      expect(response.status).toBe(201);
+    });
   });
 });
