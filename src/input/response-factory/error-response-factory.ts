@@ -22,6 +22,12 @@ export const createErrorResponse = (
         type: error.name,
         message: error.message,
       }),
+    OperationError: () =>
+      res.status(500).json({
+        type: error.name,
+        message: error.message,
+        stack: error.stack,
+      }),
     default: () =>
       res.status(500).json({
         type: error.name,
