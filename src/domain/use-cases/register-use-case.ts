@@ -12,8 +12,8 @@ export default class RegisterUseCase<T> {
     const builder = getEntityBuilder(this.entityName);
     const entity = builder(props, id);
 
-    if (entity.password)
-      entity.password = this.encryptor.encrypt(entity.password);
+    if (entity.props.password)
+      entity.props.password = this.encryptor.encrypt(props.password);
 
     return this.repository.save(entity);
   }
