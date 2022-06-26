@@ -1,7 +1,11 @@
 import { Response } from "express";
 
-export function createErrorResponse(error: Error, res: Response) {
-  const errorDict = {
+export const createErrorResponse = (
+  error: Error,
+  res: Response,
+  devMode?: boolean
+) => {
+  const errorRecords: Record<string, Function> = {
     ValidationError: () =>
       res.status(400).json({
         type: error.name,
@@ -18,6 +22,12 @@ export function createErrorResponse(error: Error, res: Response) {
         type: error.name,
         message: error.message,
       }),
+    OperationError: () =>
+      res.status(500).json({
+        type: error.name,
+        message: error.message,
+        stack: error.stack,
+      }),
     default: () =>
       res.status(500).json({
         type: error.name,
@@ -25,6 +35,11 @@ export function createErrorResponse(error: Error, res: Response) {
         stack: error.stack,
       }),
   };
+  if (devMode)
+    console.error(`Error Caught in middleware:
+  Name: ${error.name} 
+  Message: ${error.message}
+  Stack: ${error.stack}`);
 
-  return errorDict[error.name] ? errorDict[error.name]() : errorDict.default();
-}
+  return errorRecords[error.name] ?? errorRecords.default;
+};

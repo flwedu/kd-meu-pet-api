@@ -1,16 +1,16 @@
-import request from "supertest";
-import { configureExpress } from "../config/config-express-app";
-import { UsersRepositoryInMemory } from "../output/repositories/in-memory";
-import { createFakeUser } from "../utils/fake-entity-factory";
-import { makeBcryptEncryptor } from "../security/bcrypt";
+import supertest from "supertest";
+import getInMemoryRepositories from "../../config/configure-repositories-in-memory";
+import { ExpressServer } from "../../config/express-server";
+import { makeBcryptEncryptor } from "../../security/bcrypt";
+import { createFakeUser } from "../../utils/fake-entity-factory";
 
 describe("Login Routes", () => {
-  const repository = new UsersRepositoryInMemory();
+  const repositories = getInMemoryRepositories();
   const encryptor = makeBcryptEncryptor("secret");
-  const app = configureExpress({ users: repository }, encryptor);
+  const app = new ExpressServer(repositories, encryptor).getApp();
 
   beforeAll(async () => {
-    await repository.save(
+    await repositories.users.save(
       createFakeUser(
         { username: "test", password: encryptor.encrypt("test") },
         "1"
@@ -18,24 +18,30 @@ describe("Login Routes", () => {
     );
   });
 
-  describe("POST /login", () => {
+  describe("POST /api/login", () => {
     test("should return a success response", async () => {
-      const response = await request(app)
+      const response = await supertest(app)
         .post("/api/login")
         .send({ username: "test", password: "test" });
+
+      expect.assertions(1);
       expect(response.status).toBe(200);
     });
 
     test("should return a error response", async () => {
-      const response = await request(app)
+      const response = await supertest(app)
         .post("/api/login")
         .send({ username: "test", password: "wrong" });
+
+      expect.assertions(1);
       expect(response.status).toBe(401);
     });
   });
   describe("GET /login", () => {
     test("should return a success response", async () => {
-      const response = await request(app).get("/api/login");
+      const response = await supertest(app).get("/api/login");
+
+      expect.assertions(1);
       expect(response.status).toBe(200);
     });
   });

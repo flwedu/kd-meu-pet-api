@@ -3,21 +3,22 @@ import IEncryptor from "../../../security/encryptor-interface";
 import User from "../../entities/user";
 import { AuthenticationError } from "../../errors/auth-error";
 
-export function makeLoginUserUseCase(
-  repository: IRepository<User.Entity>,
-  encryptor: IEncryptor
-) {
-  return async ({
+export class LoginUserUseCase {
+  constructor(
+    private repository: IRepository<User.Entity>,
+    private encryptor: IEncryptor
+  ) {}
+  async execute({
     username,
     password,
   }: {
     username: string;
     password: string;
-  }) => {
-    const user = await repository.findOne({ username: username });
-    if (user && encryptor.checkEquals(password, user.props.password)) {
+  }) {
+    const user = await this.repository.findOne({ username: username });
+    if (user && this.encryptor.checkEquals(password, user.props.password)) {
       return user;
     }
     throw new AuthenticationError("Invalid username or password");
-  };
+  }
 }

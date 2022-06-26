@@ -2,8 +2,9 @@ import DatabaseError from "../../../domain/errors/database-error";
 import NotFoundError from "../../../domain/errors/not-found";
 import IRepository from "../repository-interface";
 
-export default class InMemoryBaseRepository<T extends { id: string }>
-  implements IRepository<T>
+export default class InMemoryBaseRepository<
+  T extends { id: string; props: any }
+> implements IRepository<T>
 {
   private list: T[] = [];
   constructor() {}
@@ -12,7 +13,7 @@ export default class InMemoryBaseRepository<T extends { id: string }>
     return Promise.resolve(this.list);
   }
 
-  findOne(query: object): Promise<T> {
+  findOne(query: Partial<T>): Promise<T> {
     const found = this.list.find((el: T & { props: any }) => {
       for (const key in query) {
         if (query[key] !== el.props[key]) {
