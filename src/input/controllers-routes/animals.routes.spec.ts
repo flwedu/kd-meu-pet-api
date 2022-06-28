@@ -92,7 +92,7 @@ describe("# Animals routes #", () => {
       );
 
       expect.assertions(1);
-      expect(response.statusCode).toEqual(200);
+      expect(response.statusCode).toEqual(202);
     });
 
     test("with a inexistent id, should return 404", async () => {

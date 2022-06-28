@@ -83,7 +83,7 @@ describe("## Occurrences routes ##", () => {
       );
 
       expect.assertions(1);
-      expect(response.status).toBe(200);
+      expect(response.status).toBe(202);
     });
 
     test("Should return 404 with invalid id", async () => {

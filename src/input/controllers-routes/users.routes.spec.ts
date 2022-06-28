@@ -113,7 +113,7 @@ describe("## Users routes ##", () => {
       );
 
       expect.assertions(1);
-      expect(response.statusCode).toEqual(200);
+      expect(response.statusCode).toEqual(202);
     });
 
     test("Should return 404 with an invalid id", async () => {
