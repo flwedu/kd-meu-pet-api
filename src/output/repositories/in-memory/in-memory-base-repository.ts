@@ -54,10 +54,10 @@ export default class InMemoryBaseRepository<
     throw new NotFoundError();
   }
   _delete(id: string): Promise<boolean> {
-    const notSameId = (el: T) => el.id !== id;
+    const notSameId = (el: T) => el.id != id;
     const oldLength = this.list.length;
-    this.list.filter(notSameId);
-    if (oldLength > this.list.length) {
+    this.list = this.list.filter(notSameId);
+    if (this.list.length < oldLength) {
       return Promise.resolve(true);
     }
     throw new DatabaseError("Could't delete entity");
