@@ -2,12 +2,14 @@ import DatabaseError from "../../../domain/errors/database-error";
 import NotFoundError from "../../../domain/errors/not-found";
 import IRepository from "../repository-interface";
 
-export default class InMemoryBaseRepository<
-  T extends { id: string; props: any }
-> implements IRepository<T>
+type Entity = {
+  id: string;
+  props: object;
+};
+export default class InMemoryBaseRepository<T extends Entity>
+  implements IRepository<T>
 {
   private list: T[] = [];
-  constructor() {}
 
   async findAll(): Promise<T[]> {
     return Promise.resolve(this.list);
@@ -16,11 +18,8 @@ export default class InMemoryBaseRepository<
   async findOne(query: Partial<T>): Promise<T> {
     const found = this.list.find((el: T & { props: any }) => {
       for (const key in query) {
-        if (query[key] !== el.props[key]) {
-          return false;
-        }
+        return query[key] == el.props[key];
       }
-      return true;
     });
     if (found) {
       return Promise.resolve(found);
@@ -37,21 +36,15 @@ export default class InMemoryBaseRepository<
     throw new DatabaseError("Could't save entity");
   }
   async findById(id: string): Promise<T> {
-    const sameId = (el: T) => el.id == id;
-    const find = this.list.find(sameId);
+    const index = this.findIndexById(id);
 
-    if (!!find) return Promise.resolve(find);
-    throw new NotFoundError();
+    return Promise.resolve(this.list[index]);
   }
   async update(entity: T, id: string): Promise<string> {
-    const sameId = (el: T) => el.id == id;
-    const entityIndex = this.list.findIndex(sameId);
+    const index = this.findIndexById(id);
 
-    if (entityIndex > -1) {
-      this.list[entityIndex] = entity;
-      return Promise.resolve(entity.id);
-    }
-    throw new NotFoundError();
+    this.list[index] = entity;
+    return Promise.resolve(entity.id);
   }
   async _delete(id: string): Promise<boolean> {
     await this.findById(id);
@@ -63,5 +56,12 @@ export default class InMemoryBaseRepository<
       return Promise.resolve(true);
     }
     throw new DatabaseError("Could't delete entity");
+  }
+
+  private findIndexById(id: string): number {
+    const index = this.list.findIndex((el: T) => el.id == id);
+
+    if (index >= 0) return index;
+    throw new NotFoundError();
   }
 }
