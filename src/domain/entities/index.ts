@@ -5,13 +5,13 @@ import Occurrence from "./occurrence";
 type EntityTypes = {
   users: User.Entity;
   animals: Animal.Entity;
-  ocurrences: Occurrence.Entity;
+  occurrences: Occurrence.Entity;
 };
 
 type EntityProps = {
   users: User.Props;
   animals: Animal.Props;
-  ocurrences: Occurrence.Props;
+  occurrences: Occurrence.Props;
 };
 
 type EntityNames = keyof EntityTypes;
