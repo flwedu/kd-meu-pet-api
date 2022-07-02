@@ -1,11 +1,12 @@
 import IRepository from "../../output/repositories/repository-interface";
 import IEncryptor from "../../security/encryptor-interface";
-import { EntityName, getEntityBuilder } from "../../utils/entity-builder";
+import { getEntityBuilder } from "../../utils/entity-builder";
+import { EntityNames } from "../entities";
 
 export default class RegisterUseCase<T> {
   constructor(
     private repository: IRepository<T>,
-    private entityName: EntityName,
+    private entityName: EntityNames,
     private encryptor: IEncryptor
   ) {}
   execute(props: any, id?: string) {

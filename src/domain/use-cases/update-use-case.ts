@@ -1,10 +1,11 @@
 import IRepository from "../../output/repositories/repository-interface";
-import { EntityName, getEntityBuilder } from "../../utils/entity-builder";
+import { getEntityBuilder } from "../../utils/entity-builder";
+import { EntityNames } from "../entities";
 
 export default class UpdateUseCaseFn<T> {
   constructor(
     private repository: IRepository<T>,
-    private entityName: EntityName
+    private entityName: EntityNames
   ) {}
 
   execute(props: any, id: string) {

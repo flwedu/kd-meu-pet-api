@@ -1,11 +1,11 @@
 import { Request } from "express";
+import { EntityNames } from "../domain/entities";
 import { OperationError } from "../domain/errors/operation-error";
-import { EntityName } from "./entity-builder";
 
 export function getNameFromPathOrBaseUrl(
   request: Partial<Request>
-): EntityName {
-  function findNameInUrl(url: string): EntityName {
+): EntityNames {
+  function findNameInUrl(url: string): EntityNames {
     const findPathRegex = /api\/(\w+)\/?/gi;
     const matchResults = findPathRegex.exec(url);
     if (!matchResults) {
@@ -13,7 +13,7 @@ export function getNameFromPathOrBaseUrl(
         `Could not extract entity name from path: ${url}`
       );
     }
-    return matchResults[1] as EntityName;
+    return matchResults[1] as EntityNames;
   }
 
   const url = checkValidUrlPath(request.path) ? request.path : request.baseUrl;
